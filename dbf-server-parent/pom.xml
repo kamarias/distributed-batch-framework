@@ -7,6 +7,13 @@
     <version>1.0-SNAPSHOT</version>
     <packaging>pom</packaging>
     <description>Distributed Batch Framework 服务端依赖管理</description>
+    <modules>
+        <module>dbf-server-ddd-starter</module>
+        <module>dbf-server-ddd-infrastructure</module>
+        <module>dbf-server-ddd-domain</module>
+        <module>dbf-server-ddd-application</module>
+        <module>dbf-server-ddd-api</module>
+    </modules>
 
 
     <properties>
