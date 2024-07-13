@@ -17,11 +17,9 @@ import org.springframework.core.type.AnnotationMetadata;
 import org.springframework.core.type.filter.AnnotationTypeFilter;
 import org.springframework.util.Assert;
 import org.springframework.util.ClassUtils;
+import org.springframework.util.StringUtils;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 public class ProcessorComponentRegistrar implements ImportBeanDefinitionRegistrar, EnvironmentAware, ResourceLoaderAware {
 
@@ -43,27 +41,27 @@ public class ProcessorComponentRegistrar implements ImportBeanDefinitionRegistra
 
         ClassPathScanningCandidateComponentProvider scanner = new ClassPathScanningCandidateComponentProvider() {
             @Override
-            protected boolean isCandidateComponent(AnnotatedBeanDefinition metadataReader) {
-                return true;
+            protected boolean isCandidateComponent(AnnotatedBeanDefinition definition) {
+                return definition.getMetadata().hasAnnotation(Processor.class.getName()) &&
+                        Objects.nonNull(definition.getMetadata().getAnnotationAttributes(Processor.class.getName())) &&
+                        StringUtils.hasText(String.valueOf(definition.getMetadata().getAnnotationAttributes(Processor.class.getName()).get("value")));
             }
         };
+
         scanner.setEnvironment(environment);
         scanner.setResourceLoader(resourceLoader);
         scanner.addIncludeFilter(new AnnotationTypeFilter(Processor.class));
         for (String basePackage : scanBasePackages) {
             Set<BeanDefinition> beanDefinitions = scanner.findCandidateComponents(basePackage);
             for (BeanDefinition beanDefinition : beanDefinitions) {
-                if (beanDefinition instanceof AnnotatedBeanDefinition){
+                if (beanDefinition instanceof AnnotatedBeanDefinition) {
                     AnnotatedBeanDefinition definition = (AnnotatedBeanDefinition) beanDefinition;
-                    AnnotationMetadata annotationMetadata = definition.getMetadata();
-                    if (annotationMetadata.hasAnnotation(Processor.class.getName())){
-                        Map<String, Object> attributes = annotationMetadata.getAnnotationAttributes(Processor.class.getName());
-                        Assert.notNull(attributes, "Processor Class Is Null");
-                        String o = (String) attributes.get("value");
-                        definition.setScope(ConfigurableBeanFactory.SCOPE_PROTOTYPE);
-                        registry.registerBeanDefinition(o, definition);
-                    }
+                    Map<String, Object> attributes = definition.getMetadata().getAnnotationAttributes(Processor.class.getName());
+                    Assert.notNull(attributes, "Processor Class Is Null");
+                    definition.setScope(ConfigurableBeanFactory.SCOPE_PROTOTYPE);
+                    registry.registerBeanDefinition(String.valueOf(attributes.get("value")), definition);
                 }
+
             }
         }
 
