@@ -21,10 +21,18 @@
 
 
     <dependencies>
+
         <dependency>
             <groupId>io.github.kamarias.dbf.app</groupId>
             <artifactId>dbf-application-template-application</artifactId>
             <version>${parent.version}</version>
+            <scope>compile</scope>
         </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+
     </dependencies>
 </project>
