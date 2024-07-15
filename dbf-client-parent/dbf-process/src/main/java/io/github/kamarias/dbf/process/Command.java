@@ -1,4 +1,4 @@
-package io.github.kamarias.dbf;
+package io.github.kamarias.dbf.process;
 
 
 import java.util.Map;

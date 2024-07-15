@@ -24,6 +24,7 @@
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <maven.compiler.target>${java.version}</maven.compiler.target>
         <spring.boot.dependencies.version>2.6.9</spring.boot.dependencies.version>
+        <fastjson2.version>2.0.33</fastjson2.version>
     </properties>
 
     <dependencyManagement>
@@ -35,6 +36,11 @@
                 <version>${spring.boot.dependencies.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>com.alibaba.fastjson2</groupId>
+                <artifactId>fastjson2</artifactId>
+                <version>${fastjson2.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
