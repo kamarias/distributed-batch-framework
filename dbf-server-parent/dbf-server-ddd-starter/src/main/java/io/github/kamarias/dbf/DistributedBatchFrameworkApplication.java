@@ -1,13 +1,16 @@
 package io.github.kamarias.dbf;
 
-import io.github.kamarias.dbf.timer.*;
+import io.github.kamarias.dbf.timer.DbfHashedWheelTimer;
+import io.github.kamarias.dbf.timer.TimerTaskInfo;
+import io.github.kamarias.dbf.timer.TimerTaskType;
+import io.github.kamarias.dbf.timer.TimerTaskUtils;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
 
 import java.time.LocalDateTime;
 
-@SpringBootApplication
+@SpringBootApplication(scanBasePackages = {"io.github.kamarias.dbf", "io.github.kamarias.dbf.gateway"})
 public class DistributedBatchFrameworkApplication {
 
 
@@ -16,19 +19,12 @@ public class DistributedBatchFrameworkApplication {
                 SpringApplication.
                         run(DistributedBatchFrameworkApplication.class,
                                 args);
-
-
-        HoursTimerTask.getTaskInfoList().add(new TimerTaskInfo<>("小时任务1", LocalDateTime.now().plusMinutes(4), TimerTaskType.APPLICATION_TASK, null));
-        HoursTimerTask.getTaskInfoList().add(new TimerTaskInfo<>("小时任务2", LocalDateTime.now().plusMinutes(5), TimerTaskType.APPLICATION_TASK, null));
-        MinutesTimerTask.getTaskInfoList().add(new TimerTaskInfo<>("分钟任务1", LocalDateTime.now().plusMinutes(1), null, null));
-        MinutesTimerTask.getTaskInfoList().add(new TimerTaskInfo<>("分钟任务2", LocalDateTime.now().plusMinutes(2), TimerTaskType.APPLICATION_TASK, null));
-        MinutesTimerTask.getTaskInfoList().add(new TimerTaskInfo<>("分钟任务3", LocalDateTime.now().plusMinutes(3), TimerTaskType.APPLICATION_TASK, null));
-        SecondTimerTask.getTaskInfoList().add(new TimerTaskInfo<>("秒级任务1", LocalDateTime.now().plusSeconds(5), TimerTaskType.APPLICATION_TASK, null));
-        SecondTimerTask.getTaskInfoList().add(new TimerTaskInfo<>("秒级任务2", LocalDateTime.now().plusSeconds(10), TimerTaskType.SATURDAY, null));
-        SecondTimerTask.getTaskInfoList().add(new TimerTaskInfo<>("秒级任务3", LocalDateTime.now().plusSeconds(15), TimerTaskType.SATURDAY, null));
-
-        DbfHashedWheelTimer dbfHashedWheelTimer = new DbfHashedWheelTimer();
+        TimerTaskUtils timerTaskUtils = context.getBean(TimerTaskUtils.class);
+        DbfHashedWheelTimer dbfHashedWheelTimer = context.getBean(DbfHashedWheelTimer.class);
         dbfHashedWheelTimer.start();
+
+        timerTaskUtils.addTimerTask(new TimerTaskInfo<>("秒级任务3", LocalDateTime.now().plusSeconds(1), TimerTaskType.SATURDAY, null));
+
 
     }
 

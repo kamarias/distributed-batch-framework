@@ -1,9 +1,7 @@
 package io.github.kamarias.dbf.listener;
 
-import io.github.kamarias.dbf.timer.SecondTimerTask;
-import io.github.kamarias.dbf.timer.TimerTaskApplicationEvent;
-import io.github.kamarias.dbf.timer.TimerTaskInfo;
-import io.github.kamarias.dbf.timer.TimerTaskType;
+import io.github.kamarias.dbf.domain.TaskService;
+import io.github.kamarias.dbf.timer.*;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationListener;
@@ -19,8 +17,14 @@ public class TimerTaskEventListener implements ApplicationListener<TimerTaskAppl
     private final TaskExecutor executor;
 
 
-    public TimerTaskEventListener(@Qualifier("timerTaskThreadPool") TaskExecutor executor) {
+    private final TaskService taskService;
+
+    private final TimerTaskUtils timerTaskUtils;
+
+    public TimerTaskEventListener(@Qualifier("timerTaskThreadPool") TaskExecutor executor, TaskService taskService, TimerTaskUtils timerTaskUtils) {
         this.executor = executor;
+        this.taskService = taskService;
+        this.timerTaskUtils = timerTaskUtils;
     }
 
     @Override
@@ -35,17 +39,18 @@ public class TimerTaskEventListener implements ApplicationListener<TimerTaskAppl
         TimerTaskInfo<?> timerTaskInfo = event.getTimerTaskInfo();
         switch (timerTaskInfo.getTaskType()) {
             case APPLICATION_TASK:
-                System.out.println("Application started" + Thread.currentThread().getName());
+                System.out.println("Application started" + timerTaskInfo  + "   " + LocalDateTime.now());
                 break;
             case SATURDAY:
-                System.out.println("Saturday started" + Thread.currentThread().getName());
-                SecondTimerTask.getTaskInfoList().add(new TimerTaskInfo<>("秒级任务3", LocalDateTime.now().plusSeconds(1), TimerTaskType.SATURDAY, null));
+                System.out.println("Saturday started" + timerTaskInfo+ "   " + LocalDateTime.now());
+                taskService.test();
+                timerTaskUtils.addTimerTask(new TimerTaskInfo<>("秒级任务3", LocalDateTime.now().plusSeconds(1), TimerTaskType.SATURDAY, null));
                 break;
             case HEALTH_MONITOR:
-                System.out.println("Friday started" + Thread.currentThread().getName());
+                System.out.println("Friday started" + timerTaskInfo+ "   " + LocalDateTime.now());
                 break;
             default:
-                System.out.println("Unknown task type" + Thread.currentThread().getName());
+                System.out.println("Unknown task type" + timerTaskInfo+ "   " + LocalDateTime.now());
         }
     }
 }

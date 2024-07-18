@@ -33,5 +33,11 @@
             <scope>compile</scope>
         </dependency>
 
+        <dependency>
+            <groupId>io.github.kamarias.dbf</groupId>
+            <artifactId>dbf-server-ddd-infrastructure</artifactId>
+            <version>${parent.version}</version>
+        </dependency>
+
     </dependencies>
 </project>

@@ -33,5 +33,11 @@
             <artifactId>dbf-spring-boot-starter</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>io.github.kamarias.dbf.app</groupId>
+            <artifactId>dbf-application-template-infrastructure</artifactId>
+            <version>${parent.version}</version>
+        </dependency>
+
     </dependencies>
 </project>
