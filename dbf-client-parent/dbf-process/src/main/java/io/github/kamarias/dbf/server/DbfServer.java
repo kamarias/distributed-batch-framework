@@ -2,6 +2,7 @@ package io.github.kamarias.dbf.server;
 
 import com.alibaba.fastjson2.JSON;
 import com.alibaba.fastjson2.JSONObject;
+import io.github.kamarias.dbf.process.Command;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.*;
@@ -70,7 +71,7 @@ public class DbfServer {
 //                logger.info(">>>>>>>>>>> xxl-job remoting server start success, nettype = {}, port = {}", EmbedServer.class, port);
 
                 // start registry
-//                startRegistry(appname, address);
+                // startRegistry(appname, address);
 
                 // wait util stop
                 future.channel().closeFuture().sync();
@@ -161,7 +162,6 @@ public class DbfServer {
                 switch (uri) {
                     case "/idleBeat":
                         Map<String, Object> idleBeatParam = JSON.parseObject(requestData, Map.class);
-
                         return "executorBiz.idleBeat(idleBeatParam)";
                     default:
                         return "invalid request, uri-mapping(" + uri + ") not found.";
