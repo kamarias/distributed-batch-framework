@@ -23,7 +23,7 @@ public class DistributedBatchFrameworkApplication {
         DbfHashedWheelTimer dbfHashedWheelTimer = context.getBean(DbfHashedWheelTimer.class);
         dbfHashedWheelTimer.start();
 
-        timerTaskUtils.addTimerTask(new TimerTaskInfo<>("秒级任务3", LocalDateTime.now().plusSeconds(1), TimerTaskType.SATURDAY, null));
+        timerTaskUtils.addTimerTask(new TimerTaskInfo<>("秒级任务3", LocalDateTime.now().plusSeconds(1), TimerTaskType.CLUSTER_LEADER, null));
 
 
     }

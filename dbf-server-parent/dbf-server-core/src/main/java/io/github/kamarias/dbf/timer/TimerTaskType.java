@@ -15,7 +15,10 @@ public enum TimerTaskType {
     HEALTH_MONITOR,
 
 
-    SATURDAY,
+    /**
+     * 集群领导切换
+     */
+    CLUSTER_LEADER,
 
 
     /**

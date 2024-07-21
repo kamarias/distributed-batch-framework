@@ -34,3 +34,7 @@ spring:
         wall:
           config:
             call-allow: true
+dbf:
+  zookeeper:
+    address: 192.168.43.10:2181
+

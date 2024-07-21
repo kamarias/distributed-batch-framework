@@ -41,10 +41,10 @@ public class TimerTaskEventListener implements ApplicationListener<TimerTaskAppl
             case APPLICATION_TASK:
                 System.out.println("Application started" + timerTaskInfo  + "   " + LocalDateTime.now());
                 break;
-            case SATURDAY:
+            case CLUSTER_LEADER:
                 System.out.println("Saturday started" + timerTaskInfo+ "   " + LocalDateTime.now());
                 taskService.test();
-                timerTaskUtils.addTimerTask(new TimerTaskInfo<>("秒级任务3", LocalDateTime.now().plusSeconds(1), TimerTaskType.SATURDAY, null));
+                timerTaskUtils.addTimerTask(new TimerTaskInfo<>("秒级任务3", LocalDateTime.now().plusSeconds(1), TimerTaskType.CLUSTER_LEADER, null));
                 break;
             case HEALTH_MONITOR:
                 System.out.println("Friday started" + timerTaskInfo+ "   " + LocalDateTime.now());

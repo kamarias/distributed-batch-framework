@@ -1,6 +1,7 @@
 package io.github.kamarias.dbf.zookeeper;
 
 
+import io.github.kamarias.dbf.timer.TimerTaskUtils;
 import org.apache.curator.framework.CuratorFramework;
 import org.apache.curator.framework.CuratorFrameworkFactory;
 import org.apache.curator.framework.recipes.leader.LeaderLatch;
@@ -10,17 +11,16 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
 @Configuration(proxyBeanMethods = false)
-@Import(DbfZookeeperProperties.class)
+@Import({DbfZookeeperProperties.class, DbfConfigConfigurationRegistrar.class})
 public class DbfZookeeperConfigurer {
 
     private final DbfZookeeperProperties properties;
 
-    private final DbfClusterInstance instance;
+    private final TimerTaskUtils timerTaskUtils;
 
-
-    public DbfZookeeperConfigurer(DbfZookeeperProperties dbfZookeeperProperties, DbfClusterInstance instance) {
+    public DbfZookeeperConfigurer(DbfZookeeperProperties dbfZookeeperProperties, TimerTaskUtils timerTaskUtils) {
         this.properties = dbfZookeeperProperties;
-        this.instance = instance;
+        this.timerTaskUtils = timerTaskUtils;
     }
 
     @Bean("curatorClient")
@@ -39,8 +39,8 @@ public class DbfZookeeperConfigurer {
         client.start();
 
         // Register the listener instance
-        LeaderLatch leaderLatch = new LeaderLatch(client, DbfZookeeperEnum.LEADER_PATH.getPath(), instance.getInstanceId(), LeaderLatch.CloseMode.NOTIFY_LEADER);
-        leaderLatch.addListener(new DbfLeaderListener(client));
+        LeaderLatch leaderLatch = new LeaderLatch(client, DbfZookeeperEnum.LEADER_PATH.getPath(), DbfClusterInstance.getInstanceId(), LeaderLatch.CloseMode.NOTIFY_LEADER);
+        leaderLatch.addListener(new DbfLeaderListener(client, timerTaskUtils));
         leaderLatch.start();
         return client;
     }

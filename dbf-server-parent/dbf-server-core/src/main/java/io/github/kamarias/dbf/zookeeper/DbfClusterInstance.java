@@ -4,7 +4,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
-import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.GenericApplicationContext;
 
 import java.util.Map;
@@ -19,6 +18,8 @@ public class DbfClusterInstance {
     private static final Map<String, DbfApplicationContext> clusterMap = new ConcurrentHashMap<>();
 
     private static final String INSTANCE_ID = UUID.randomUUID().toString();
+
+    private static final DbfClusterInstance INSTANCE = new DbfClusterInstance();
 
     private DbfClusterInstance() {
     }
@@ -44,7 +45,7 @@ public class DbfClusterInstance {
     private static void initContext(DbfApplicationContext context, BeanDefinitionRegistry registry, ConfigurableListableBeanFactory beanFactory) {
         context.setRegistry(registry);
         context.setBeanFactory(beanFactory);
-        context.setApplicationContext(beanFactory.getBean(ApplicationContext.class));
+//        context.setApplicationContext(beanFactory.getBean(ApplicationContext.class));
 
         // @TODO init 上下文其它属性
 
@@ -82,8 +83,12 @@ public class DbfClusterInstance {
      *
      * @return 返回实例Id
      */
-    public String getInstanceId() {
+    public static String getInstanceId() {
         return DbfClusterInstance.INSTANCE_ID;
+    }
+
+    public static DbfClusterInstance getInstance(){
+        return INSTANCE;
     }
 
 }
