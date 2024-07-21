@@ -21,21 +21,13 @@
     </properties>
 
 
-
     <dependencies>
 
         <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-context</artifactId>
-            <scope>compile</scope>
+            <groupId>io.github.kamarias.dbf</groupId>
+            <artifactId>dbf-server-core</artifactId>
+            <version>${parent.version}</version>
         </dependency>
-
-        <dependency>
-            <groupId>io.netty</groupId>
-            <artifactId>netty-all</artifactId>
-        </dependency>
-
-
 
     </dependencies>
 </project>
