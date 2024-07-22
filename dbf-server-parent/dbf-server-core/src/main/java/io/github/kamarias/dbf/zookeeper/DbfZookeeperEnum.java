@@ -10,13 +10,13 @@ public enum DbfZookeeperEnum {
 
 
     /**
-     * 存放注册的所有实例数据
+     * 存放注册的所有实例数据父节点
      */
     INSTANCE_DATE("/instance_date", "存放注册节点的数据"),
 
 
     /**
-     *
+     * 更新实例数据锁 key
      */
     INSTANCE_DATE_LOCK_PATH("/lock_path", "锁路径");
 
@@ -24,7 +24,7 @@ public enum DbfZookeeperEnum {
     /**
      * 节点路径
      */
-    private final String path;
+    private final String value;
 
     /**
      * 节点描述
@@ -32,13 +32,13 @@ public enum DbfZookeeperEnum {
     private final String desc;
 
 
-    DbfZookeeperEnum(String path, String desc) {
-        this.path = path;
+    DbfZookeeperEnum(String value, String desc) {
+        this.value = value;
         this.desc = desc;
     }
 
-    public String getPath() {
-        return path;
+    public String getValue() {
+        return value;
     }
 
     public String getDesc() {

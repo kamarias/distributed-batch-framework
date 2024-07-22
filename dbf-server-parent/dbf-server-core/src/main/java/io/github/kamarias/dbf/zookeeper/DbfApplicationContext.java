@@ -4,13 +4,17 @@ import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.context.ApplicationContext;
 
-public class DbfApplicationContext {
+import java.io.Serializable;
+
+public class DbfApplicationContext implements Serializable {
 
     private transient BeanDefinitionRegistry registry;
 
     private transient ConfigurableListableBeanFactory beanFactory;
 
     private transient ApplicationContext applicationContext;
+
+    private String instanceId = DbfClusterInstance.getInstanceId();
 
     /**
      * 实例Ip
@@ -26,6 +30,16 @@ public class DbfApplicationContext {
      * 应用名称
      */
     private String applicationName;
+
+    /**
+     * 节点标签（默认）
+     */
+    private ClusterTags tags = ClusterTags.SALVE;
+
+    public void setInstanceId(String instanceId) {
+        this.instanceId = instanceId;
+    }
+
 
 
     public BeanDefinitionRegistry getRegistry() {
@@ -52,6 +66,10 @@ public class DbfApplicationContext {
         this.applicationContext = applicationContext;
     }
 
+    public String getInstanceId() {
+        return instanceId;
+    }
+
     public String getIp() {
         return ip;
     }
@@ -75,4 +93,24 @@ public class DbfApplicationContext {
     public void setApplicationName(String applicationName) {
         this.applicationName = applicationName;
     }
+
+    public ClusterTags getTags() {
+        return tags;
+    }
+
+    public void setTags(ClusterTags tags) {
+        this.tags = tags;
+    }
+
+    /**
+     * 集群标签
+     */
+    public enum ClusterTags {
+
+        MASTER,
+
+        SALVE;
+
+    }
+
 }

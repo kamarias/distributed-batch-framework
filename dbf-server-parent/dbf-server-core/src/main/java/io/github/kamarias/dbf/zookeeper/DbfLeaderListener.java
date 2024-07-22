@@ -24,23 +24,27 @@ public class DbfLeaderListener implements LeaderLatchListener {
      */
     private final TimerTaskUtils timerTaskUtils;
 
-    public DbfLeaderListener(CuratorFramework client, TimerTaskUtils timerTaskUtils1) {
+
+    public DbfLeaderListener(CuratorFramework client, TimerTaskUtils timerTaskUtils) {
         this.client = client;
-        this.timerTaskUtils = timerTaskUtils1;
+        this.timerTaskUtils = timerTaskUtils;
     }
 
     @Override
     public void isLeader() {
-        logger.info("");
-        timerTaskUtils.addTimerTask(new TimerTaskInfo<>("lsdc",
-                LocalDateTime.now(),
-                TimerTaskType.CLUSTER_LEADER,
-                DbfClusterInstance.getInstanceId()));
+        boolean b = false;
+        b = DbfClusterInstance.refreshClusterMapToMaster(client);
+        if (!b) {
+            // 切换锁失败，发送调度任务告警
+            timerTaskUtils.addTimerTask(new TimerTaskInfo<>("DBF 集群领导者切换",
+                    LocalDateTime.now(),
+                    TimerTaskType.CLUSTER_LEADER,
+                    DbfClusterInstance.getInstanceId()));
+        }
     }
 
     @Override
     public void notLeader() {
-        client.getState();
-    }
 
+    }
 }

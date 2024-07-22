@@ -28,6 +28,7 @@
         <mybatis.plus.version>3.5.7</mybatis.plus.version>
         <druid.starter.version>1.2.15</druid.starter.version>
         <apache.curator.version>4.3.0</apache.curator.version>
+        <fastjson2.version>2.0.33</fastjson2.version>
     </properties>
 
     <dependencyManagement>
@@ -59,6 +60,12 @@
                 <groupId>com.alibaba</groupId>
                 <artifactId>druid-spring-boot-starter</artifactId>
                 <version>${druid.starter.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.alibaba.fastjson2</groupId>
+                <artifactId>fastjson2</artifactId>
+                <version>${fastjson2.version}</version>
             </dependency>
 
         </dependencies>

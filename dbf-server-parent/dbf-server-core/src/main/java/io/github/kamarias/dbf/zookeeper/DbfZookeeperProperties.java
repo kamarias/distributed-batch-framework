@@ -16,7 +16,7 @@ public class DbfZookeeperProperties {
     /**
      * 连接超时时间
      */
-    private Integer connectionTimeoutMs = 3000;
+    private Integer connectionTimeoutMs = 10000;
 
 
     /**
