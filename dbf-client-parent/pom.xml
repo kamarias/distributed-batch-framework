@@ -13,6 +13,7 @@
         <module>dbf-spring-boot-starter</module>
         <module>dbf-process</module>
         <module>dbf-spring-boot-autoconfigure</module>
+        <module>dbf-core</module>
     </modules>
 
 
@@ -25,6 +26,7 @@
         <maven.compiler.target>${java.version}</maven.compiler.target>
         <spring.boot.dependencies.version>2.6.9</spring.boot.dependencies.version>
         <fastjson2.version>2.0.33</fastjson2.version>
+        <apache.curator.version>4.3.0</apache.curator.version>
     </properties>
 
     <dependencyManagement>
@@ -37,6 +39,15 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
+
+            <dependency>
+                <groupId>org.apache.curator</groupId>
+                <artifactId>apache-curator</artifactId>
+                <version>${apache.curator.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
             <dependency>
                 <groupId>com.alibaba.fastjson2</groupId>
                 <artifactId>fastjson2</artifactId>

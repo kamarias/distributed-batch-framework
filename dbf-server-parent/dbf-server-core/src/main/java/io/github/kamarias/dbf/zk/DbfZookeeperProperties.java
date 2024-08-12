@@ -1,4 +1,4 @@
-package io.github.kamarias.dbf.zookeeper;
+package io.github.kamarias.dbf.zk;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
@@ -22,7 +22,7 @@ public class DbfZookeeperProperties {
     /**
      * 会话超时时间
      */
-    private Integer sessionTimeOut = 3000;
+    private Integer sessionTimeOut = 1000;
 
 
     /**

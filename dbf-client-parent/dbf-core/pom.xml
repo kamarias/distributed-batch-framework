@@ -7,15 +7,13 @@
         <version>1.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>dbf-process</artifactId>
+    <artifactId>dbf-core</artifactId>
     <packaging>jar</packaging>
 
-    <name>dbf-process</name>
-    <description>Distributed Batch Framework 处理进程核心类</description>
+    <name>dbf-core</name>
+    <url>http://maven.apache.org</url>
 
     <properties>
-        <maven.compiler.source>8</maven.compiler.source>
-        <maven.compiler.target>8</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
@@ -27,19 +25,26 @@
         </dependency>
 
         <dependency>
-            <groupId>io.github.kamarias.dbf</groupId>
-            <artifactId>dbf-core</artifactId>
-            <version>${parent.version}</version>
-        </dependency>
-
-        <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-context</artifactId>
         </dependency>
 
         <dependency>
-            <groupId>com.alibaba.fastjson2</groupId>
-            <artifactId>fastjson2</artifactId>
+            <groupId>org.apache.curator</groupId>
+            <artifactId>curator-client</artifactId>
+            <scope>compile</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.curator</groupId>
+            <artifactId>curator-framework</artifactId>
+            <scope>compile</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.curator</groupId>
+            <artifactId>curator-recipes</artifactId>
+            <scope>compile</scope>
         </dependency>
     </dependencies>
 </project>

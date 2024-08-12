@@ -21,11 +21,7 @@
 
 
     <dependencies>
-        <dependency>
-            <groupId>io.github.kamarias.dbf</groupId>
-            <artifactId>dbf-server-ddd-domain</artifactId>
-            <version>${parent.version}</version>
-        </dependency>
+
 
 
         <dependency>
@@ -36,6 +32,12 @@
         <dependency>
             <groupId>io.github.kamarias.dbf.app</groupId>
             <artifactId>dbf-application-template-infrastructure</artifactId>
+            <version>${parent.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>io.github.kamarias.dbf.app</groupId>
+            <artifactId>dbf-application-template-domain</artifactId>
             <version>${parent.version}</version>
         </dependency>
 

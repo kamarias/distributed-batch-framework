@@ -64,7 +64,6 @@ public class ProcessorComponentRegistrar implements ImportBeanDefinitionRegistra
 
             }
         }
-
     }
 
     @Override
