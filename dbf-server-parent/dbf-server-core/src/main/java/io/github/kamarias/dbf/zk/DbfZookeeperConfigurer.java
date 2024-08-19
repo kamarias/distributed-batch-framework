@@ -6,7 +6,6 @@ import org.apache.curator.framework.CuratorFrameworkFactory;
 import org.apache.curator.retry.ExponentialBackoffRetry;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Conditional;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
@@ -46,6 +45,21 @@ public class DbfZookeeperConfigurer {
         dbfExecuteTreeCache.getListenable().addListener(dbfExecuteListener);
         return dbfExecuteTreeCache;
     }
+
+
+    @Bean
+    public DbfExecuteRegisterListener dbfRegisterListener(ApplicationContext appContext) {
+        return new DbfExecuteRegisterListener(appContext);
+    }
+
+
+    @Bean
+    public DbfRegisterTreeCache dbfRegisterTreeCache(CuratorFramework client, DbfExecuteRegisterListener dbfRegisterListener) {
+        DbfRegisterTreeCache dbfRegisterTreeCache = new DbfRegisterTreeCache(client, DbfConstantEnum.REGISTER.getValue());
+        dbfRegisterTreeCache.getListenable().addListener(dbfRegisterListener);
+        return dbfRegisterTreeCache;
+    }
+
 
     @Bean(initMethod = "start")
     public DbfLeaderLatch leaderLatch(CuratorFramework client, DbfLeaderListener dbfLeaderListener) {

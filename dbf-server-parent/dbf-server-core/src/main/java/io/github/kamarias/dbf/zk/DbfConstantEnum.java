@@ -10,6 +10,7 @@ public enum DbfConstantEnum {
 
     SCHEDULE("/schedule", "框架调度执行器根节点"),
 
+    REGISTER("/register", "注册中心根节点"),
 
     EXECUTE("/execute", "执行器执行根节点"),
 

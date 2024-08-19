@@ -4,22 +4,16 @@ import io.github.kamarias.dbf.beans.ReportTaskInfo;
 import io.github.kamarias.dbf.event.ReportTaskEvent;
 import io.github.kamarias.dbf.event.TimerReportTaskEvent;
 import io.github.kamarias.dbf.timer.TimerTaskInfo;
-import io.github.kamarias.dbf.timer.TimerTaskUtils;
 import io.github.kamarias.dbf.utils.DbfEventUtils;
 import org.springframework.lang.NonNull;
 
-import java.time.LocalDateTime;
-
 public class TimerReportTaskListener implements DbfListener<TimerReportTaskEvent> {
-
-    private int i = 1;
 
     @Override
     public void onApplicationEvent(@NonNull TimerReportTaskEvent event) {
 
         ReportTaskInfo taskInfo = new ReportTaskInfo();
         taskInfo.setTaskId("123456");
-        taskInfo.setFinishTotal(i++);
         taskInfo.setTotal(10);
         taskInfo.setTime(10);
 

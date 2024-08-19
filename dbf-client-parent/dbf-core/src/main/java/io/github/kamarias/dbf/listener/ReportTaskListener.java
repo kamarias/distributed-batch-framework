@@ -20,7 +20,7 @@ public class ReportTaskListener implements DbfListener<ReportTaskEvent> {
         if (params.getFinishTotal() < params.getTotal()) {
             TimerTaskInfo.TimerTaskInfoBuilder<String> builder = TimerTaskInfo.builder();
             TimerTaskInfo<String> sdsddd = builder
-                    .params("sdsddd")
+                    .params(params.getTaskId())
                     .source(this)
                     .taskName("sdfghjk")
                     .startDateTime(LocalDateTime.now().plusSeconds(params.getTime()))
