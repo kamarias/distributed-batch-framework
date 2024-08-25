@@ -1,8 +1,5 @@
 package io.github.kamarias.dbf.system.vo;
 
-import lombok.Builder;
-import lombok.Data;
-
 import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
 import java.util.List;
@@ -11,8 +8,6 @@ import java.util.List;
  * @author wangyuxing@gogpay.cn
  * @date 2023/6/13 15:21
  */
-@Data
-@Builder
 public class AddUserVo implements Serializable {
 
     /**
