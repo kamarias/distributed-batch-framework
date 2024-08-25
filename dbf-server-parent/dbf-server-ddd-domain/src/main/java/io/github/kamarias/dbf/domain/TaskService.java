@@ -14,6 +14,7 @@ public class TaskService {
     }
 
     public void test(){
+
         taskGroupGateway.test();
     }
 

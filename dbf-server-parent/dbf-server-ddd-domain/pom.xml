@@ -29,5 +29,15 @@
             <version>${parent.version}</version>
         </dependency>
 
+        <dependency>
+            <groupId>io.github.kamarias</groupId>
+            <artifactId>kamarias-common</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>io.github.kamarias</groupId>
+            <artifactId>kamarias-spring-common</artifactId>
+        </dependency>
+
     </dependencies>
 </project>

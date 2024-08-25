@@ -1,0 +1,12 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+io.github.kamarias.exception.ValidExceptionHandler,\
+io.github.kamarias.web.KamariasWebMvcAutoConfiguration,\
+io.github.kamarias.web.interceptor.RepeatSubmitInterceptor,\
+io.github.kamarias.web.aspect.WebLogAspect,\
+io.github.kamarias.redis.RedisSerializerConfig,\
+io.github.kamarias.lock.DistributedLockAutoConfiguration,\
+io.github.kamarias.aspect.TokenBucketLimitAspect,\
+io.github.kamarias.aspect.DistributedLockAspect,\
+io.github.kamarias.aspect.CacheableResponseAspect,\
+io.github.kamarias.aspect.AccessLimitAspect,\
+io.github.kamarias.utils.SpringContextUtils

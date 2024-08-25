@@ -1,4 +1,4 @@
-package io.github.kamarias.dbf.gateway.db;
+package io.github.kamarias.dbf.store.db;
 
 import io.github.kamarias.dbf.gateway.TaskGroupGateway;
 import io.github.kamarias.dbf.infrastructure.db.mapper.TaskGroupMapper;
@@ -23,4 +23,5 @@ public class TaskGroupGatewayImpl implements TaskGroupGateway {
         System.out.println("rt");
         System.out.println(taskGroupService.count());
     }
+
 }

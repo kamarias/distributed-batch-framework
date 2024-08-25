@@ -22,13 +22,13 @@ public class DbfZookeeperProperties {
     /**
      * 会话超时时间
      */
-    private Integer sessionTimeOut = 1000;
+    private Integer sessionTimeOut = 6000;
 
 
     /**
      * 重试机制时间参数
      */
-    private Integer sleepMsBetweenRetry = 1000;
+    private Integer sleepMsBetweenRetry = 6000;
 
 
     /**

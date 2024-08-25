@@ -1,0 +1,4 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+io.github.kamarias.KamariasAuthAutoConfiguration,\
+io.github.kamarias.config.KamariasSecurityConfig,\
+io.github.kamarias.exception.TokenAnalyzeExceptionHandler
