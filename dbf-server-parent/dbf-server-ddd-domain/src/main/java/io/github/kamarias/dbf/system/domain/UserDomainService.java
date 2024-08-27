@@ -2,6 +2,8 @@ package io.github.kamarias.dbf.system.domain;
 
 import io.github.kamarias.dbf.system.dto.RoleDto;
 import io.github.kamarias.dbf.system.dto.UserDto;
+import io.github.kamarias.dbf.system.gateway.PermissionStoreGateway;
+import io.github.kamarias.dbf.system.gateway.RoleStoreGateway;
 import io.github.kamarias.dbf.system.gateway.UserRoleStoreGateway;
 import io.github.kamarias.dbf.system.gateway.UserStoreGateway;
 import io.github.kamarias.dbf.system.model.RoleModel;
@@ -26,11 +28,17 @@ public class UserDomainService {
 
     private final UserRoleStoreGateway userRoleStoreGateway;
 
+    private final RoleStoreGateway roleStoreGateway;
 
-    public UserDomainService(UserDomainTranslate translate, UserStoreGateway userStoreGateway, UserRoleStoreGateway userRoleStoreGateway) {
+    private final PermissionStoreGateway permissionStoreGateway;
+
+
+    public UserDomainService(UserDomainTranslate translate, UserStoreGateway userStoreGateway, UserRoleStoreGateway userRoleStoreGateway, RoleStoreGateway roleStoreGateway, PermissionStoreGateway permissionStoreGateway) {
         this.translate = translate;
         this.userStoreGateway = userStoreGateway;
         this.userRoleStoreGateway = userRoleStoreGateway;
+        this.roleStoreGateway = roleStoreGateway;
+        this.permissionStoreGateway = permissionStoreGateway;
     }
 
 
@@ -92,4 +100,30 @@ public class UserDomainService {
         List<RoleModel> rms = translate.toRoleModelListByRoleDtoList(roles);
         return DDDContext.success(rms);
     }
+
+
+    public DDDContext<Void, RoleModel> randomGetRoleByUserId(String userId) {
+        RoleDto dto = roleStoreGateway.randomFindRoleByUserId(userId);
+        if (Objects.isNull(dto)) {
+            return DDDContext.error("改用户未绑定角色，请联系管理员");
+        }
+        RoleModel roleModel = translate.toRoleModelByRoleDto(dto);
+        return DDDContext.success(roleModel);
+    }
+
+    public DDDContext<Void, RoleModel> getRoleByUserIdAndRoleId(String userId, String roleId) {
+        RoleDto dto = roleStoreGateway.findRoleByUserIdAndRoleId(userId, roleId);
+        if (Objects.isNull(dto)) {
+            return DDDContext.error("该用户没有当前角色，请联系管理员");
+        }
+        RoleModel roleModel = translate.toRoleModelByRoleDto(dto);
+        return DDDContext.success(roleModel);
+    }
+
+    public DDDContext<Void, Set<String>> getPermissionCodesByRoleId(String roleId) {
+        Set<String> permissionCodeByRoleId = permissionStoreGateway.getPermissionCodeByRoleId(roleId);
+        return Objects.isNull(permissionCodeByRoleId) ? DDDContext.success(new HashSet<>())
+                : DDDContext.success(permissionCodeByRoleId);
+    }
+
 }

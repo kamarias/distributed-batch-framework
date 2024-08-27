@@ -7,4 +7,6 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class RoleServiceStore extends ServiceImpl<RoleMapper, RoleEntity> {
+
+
 }

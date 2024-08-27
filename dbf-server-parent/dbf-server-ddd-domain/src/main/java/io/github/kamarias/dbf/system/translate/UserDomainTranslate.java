@@ -6,8 +6,6 @@ import io.github.kamarias.dbf.system.dto.UserDto;
 import io.github.kamarias.dbf.system.model.RoleModel;
 import io.github.kamarias.dbf.system.model.UserModel;
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.Mappings;
 
 import java.util.List;
 
@@ -20,5 +18,7 @@ public interface UserDomainTranslate {
 
     List<RoleModel> toRoleModelListByRoleDtoList(List<RoleDto> roles);
 
+
+    RoleModel toRoleModelByRoleDto(RoleDto dto);
 
 }

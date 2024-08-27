@@ -1,6 +1,7 @@
 package io.github.kamarias.dbf.system.translate;
 
 import io.github.kamarias.dbf.system.context.LoginUserContext;
+import io.github.kamarias.dbf.system.model.LoginModel;
 import io.github.kamarias.dbf.system.model.UserModel;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -12,4 +13,5 @@ public interface LoginServiceTranslate {
 
     LoginUserContext toLoginUserModelByUserModel(UserModel dto);
 
+    UserModel toUserModelByLoginUserContext(LoginUserContext userContext);
 }

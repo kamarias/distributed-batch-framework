@@ -15,7 +15,7 @@ export const useUserStore = defineStore({
   id: "pure-user",
   state: (): LoginUserInfo => ({
     uuid: storageSession().getItem<LoginUserInfo>(sessionKey)?.uuid ?? "",
-    name: storageSession().getItem<LoginUserInfo>(sessionKey)?.name ?? "",
+    nickName: storageSession().getItem<LoginUserInfo>(sessionKey)?.nickName ?? "",
     email: storageSession().getItem<LoginUserInfo>(sessionKey)?.email ?? "",
     permissions: storageSession().getItem<LoginUserInfo>(sessionKey)?.permissions ?? [],
     roles: storageSession().getItem<LoginUserInfo>(sessionKey)?.roles ?? [],
@@ -42,7 +42,7 @@ export const useUserStore = defineStore({
      */
     SET_LOGIN_USER_INFO(userInfo: LoginUserInfo){
       this.uuid = userInfo.uuid
-      this.name = userInfo.name
+      this.nickName = userInfo.nickName
       this.permissions = userInfo.permissions
       this.roles = userInfo.roles
       this.email = userInfo.email
@@ -52,7 +52,7 @@ export const useUserStore = defineStore({
      */
     CLEAR_LOGIN_USER_INFO(){
       this.uuid = ""
-      this.name = ""
+      this.nickName = ""
       this.email = ""
       this.roles = []
       this.permissions = []

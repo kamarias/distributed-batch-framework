@@ -45,7 +45,7 @@ export function useNav() {
 
   /** 用户名 */
   const username = computed(() => {
-    return useUserStoreHook()?.name;
+    return useUserStoreHook()?.nickName;
   });
 
   const roleOptions = computed(() => {

@@ -14,6 +14,11 @@ public class LoginModel {
     private String password;
 
     /**
+     * 角色Id
+     */
+    private String roleId;
+
+    /**
      * 验证码
      */
     private String code;
@@ -40,5 +45,13 @@ public class LoginModel {
 
     public void setCode(String code) {
         this.code = code;
+    }
+
+    public String getRoleId() {
+        return roleId;
+    }
+
+    public void setRoleId(String roleId) {
+        this.roleId = roleId;
     }
 }

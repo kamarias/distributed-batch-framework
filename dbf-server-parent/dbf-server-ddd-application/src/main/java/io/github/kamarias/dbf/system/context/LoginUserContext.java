@@ -43,6 +43,18 @@ public class LoginUserContext {
      */
     private String phone;
 
+    /**
+     * 角色Id
+     */
+    private String roleId;
+
+    public String getRoleId() {
+        return roleId;
+    }
+
+    public void setRoleId(String roleId) {
+        this.roleId = roleId;
+    }
 
     public String getId() {
         return id;

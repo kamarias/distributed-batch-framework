@@ -13,4 +13,6 @@ public interface RoleStoreTranslate {
     List<RoleDto> toRoleDtoListByRoleEntityList(List<RoleEntity> roleEntityList);
 
 
+    RoleDto toRoleDtoByRoleEntity(RoleEntity roleEntity);
+
 }

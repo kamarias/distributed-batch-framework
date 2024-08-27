@@ -1,9 +1,13 @@
 package io.github.kamarias.dbf.system.infrastructure.db.mapper;
 
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.baomidou.mybatisplus.core.toolkit.Constants;
 import io.github.kamarias.dbf.system.entity.RoleEntity;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
 
 /**
  * @author wangyuxing@gogpay.cn
@@ -12,7 +16,14 @@ import org.apache.ibatis.annotations.Mapper;
 @Mapper
 public interface RoleMapper extends BaseMapper<RoleEntity> {
 
-//
+
+
+    RoleEntity randomGetRoleByUserId(@Param("userId") String userId);
+
+
+    RoleEntity randomGetRoleByUserIdAndRoleId(@Param("userId") String userId, @Param("roleId") String roleId);
+
+
 //    /**
 //     * 查询角色列表
 //     *

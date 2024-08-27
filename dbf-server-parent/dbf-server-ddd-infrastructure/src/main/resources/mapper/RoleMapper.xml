@@ -4,6 +4,55 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="io.github.kamarias.dbf.system.infrastructure.db.mapper.RoleMapper">
 
+    <resultMap id="resultMap" type="io.github.kamarias.dbf.system.entity.RoleEntity">
+        <id property="id" column="id" jdbcType="VARCHAR"/>
+        <result property="createBy" column="create_by" jdbcType="VARCHAR"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+        <result property="updateBy" column="update_by" jdbcType="VARCHAR"/>
+        <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+        <result property="delFlag" column="del_flag" jdbcType="TINYINT"/>
+        <result property="name" column="name" jdbcType="VARCHAR"/>
+        <result property="description" column="description" jdbcType="LONGVARCHAR"/>
+        <result property="code" column="code" jdbcType="VARCHAR"/>
+        <result property="status" column="status" jdbcType="TINYINT"/>
+    </resultMap>
+
+    <sql id="allColumns" >
+        id,
+        create_by,
+        create_time,
+        update_by,
+        update_time,
+        del_flag,
+        `name`,
+        `description`,
+        `code`,
+        `status`
+    </sql>
+
+    <select id="randomGetRoleByUserId" resultMap="resultMap">
+        SELECT
+        <include refid="allColumns"/>
+        from t_role
+        where id = (
+        select role_id
+        from t_user_role
+        where user_id = #{userId}
+        limit 1
+        )
+    </select>
+
+    <select id="randomGetRoleByUserIdAndRoleId" resultMap="resultMap">
+        SELECT
+        <include refid="allColumns"/>
+        from t_role
+        where id = (
+        select role_id
+        from t_user_role
+        where user_id = #{userId} and role_id = #{roleId}
+        limit 1
+        )
+    </select>
 
 
 </mapper>

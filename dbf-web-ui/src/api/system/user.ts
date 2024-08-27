@@ -6,7 +6,7 @@ import {RoleOptions, RoleOptionsResponse} from "@/api/system/role";
 export interface LoginUserInfo {
   uuid: string,
 
-  name: string,
+  nickName: string,
 
   email: string,
 
