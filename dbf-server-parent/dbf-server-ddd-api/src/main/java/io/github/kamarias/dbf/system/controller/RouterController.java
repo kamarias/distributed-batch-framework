@@ -43,7 +43,7 @@ public class RouterController {
     @WebLog("查询菜单路由树")
     @GetMapping("/getRouters")
     public AjaxResult<Object> getMenuRouters() {
-        DDDContext<LoginUserContext, List<MenuRouterContext>> context = routerService.getMenuRouters();
+        DDDContext<Void, List<MenuRouterContext>> context = routerService.getMenuRouters();
         if (context.isError()) {
             return AjaxResult.error(context.getMsg());
         }

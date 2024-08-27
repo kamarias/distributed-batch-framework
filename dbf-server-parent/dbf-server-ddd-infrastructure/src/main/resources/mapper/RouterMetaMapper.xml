@@ -12,12 +12,12 @@
         <result column="title" property="title" jdbcType="VARCHAR"/>
         <result column="icon" property="icon" jdbcType="VARCHAR"/>
         <result column="extra_icon" property="extraIcon" jdbcType="VARCHAR"/>
-        <result column="show_link" property="showLink" jdbcType="TINYINT" javaType="boolean"/>
-        <result column="show_parent" property="showParent" jdbcType="TINYINT" javaType="boolean"/>
-        <result column="keep_alive" property="keepAlive" jdbcType="TINYINT" javaType="boolean"/>
+        <result column="show_link" property="showLink" jdbcType="TINYINT"/>
+        <result column="show_parent" property="showParent" jdbcType="TINYINT"/>
+        <result column="keep_alive" property="keepAlive" jdbcType="TINYINT"/>
         <result column="frame_src" property="frameSrc" jdbcType="LONGVARCHAR"/>
-        <result column="frame_loading" property="frameLoading" jdbcType="TINYINT" javaType="boolean"/>
-        <result column="hidden_tag" property="hiddenTag" jdbcType="TINYINT" javaType="boolean"/>
+        <result column="frame_loading" property="frameLoading" jdbcType="TINYINT"/>
+        <result column="hidden_tag" property="hiddenTag" jdbcType="TINYINT"/>
         <result column="dynamic_level" property="dynamicLevel" jdbcType="INTEGER"/>
         <result column="transition" property="transition" jdbcType="LONGVARCHAR"/>
         <result column="rank" property="rank" jdbcType="INTEGER"/>
