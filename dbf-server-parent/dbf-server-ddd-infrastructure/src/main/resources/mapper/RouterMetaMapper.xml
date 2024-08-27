@@ -5,5 +5,50 @@
 <mapper namespace="io.github.kamarias.dbf.system.infrastructure.db.mapper.RouterMetaMapper">
 
 
+    <!-- 定义 resultMap -->
+    <resultMap id="result" type="io.github.kamarias.dbf.system.entity.RouterMetaEntity">
+        <id column="id" property="id" jdbcType="VARCHAR"/>
+        <result column="router_id" property="routerId" jdbcType="VARCHAR"/>
+        <result column="title" property="title" jdbcType="VARCHAR"/>
+        <result column="icon" property="icon" jdbcType="VARCHAR"/>
+        <result column="extra_icon" property="extraIcon" jdbcType="VARCHAR"/>
+        <result column="show_link" property="showLink" jdbcType="TINYINT" javaType="boolean"/>
+        <result column="show_parent" property="showParent" jdbcType="TINYINT" javaType="boolean"/>
+        <result column="keep_alive" property="keepAlive" jdbcType="TINYINT" javaType="boolean"/>
+        <result column="frame_src" property="frameSrc" jdbcType="LONGVARCHAR"/>
+        <result column="frame_loading" property="frameLoading" jdbcType="TINYINT" javaType="boolean"/>
+        <result column="hidden_tag" property="hiddenTag" jdbcType="TINYINT" javaType="boolean"/>
+        <result column="dynamic_level" property="dynamicLevel" jdbcType="INTEGER"/>
+        <result column="transition" property="transition" jdbcType="LONGVARCHAR"/>
+        <result column="rank" property="rank" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <sql id="allColumns" >
+        id,
+        router_id,
+        title,
+        icon,
+        extra_icon,
+        show_link,
+        show_parent,
+        keep_alive,
+        frame_src,
+        frame_loading,
+        hidden_tag,
+        dynamic_level,
+        transition,
+        `rank`
+    </sql>
+
+
+    <select id="findByRouterIdRouter" resultMap="result">
+        SELECT
+        <include refid="allColumns"/>
+        FROM
+        t_router_meta
+        where router_id = #{routerId}
+        limit 1;
+    </select>
+
 
 </mapper>

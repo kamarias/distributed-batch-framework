@@ -1,12 +1,10 @@
 package io.github.kamarias.dbf.system.infrastructure.db.mapper;
 
 
-
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import io.github.kamarias.dbf.system.entity.RouterMetaEntity;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
 
 /**
  * @author wangyuxing@gogpay.cn
@@ -22,10 +20,6 @@ public interface RouterMetaMapper extends BaseMapper<RouterMetaEntity> {
      * @param routerId 路由Id
      * @return 路由源数据
      */
-    @Select("select id,router_id,title,icon,extra_icon,show_link,show_parent,keep_alive,frame_src,frame_loading,hidden_tag,dynamic_level,transition, `rank` " +
-            "from t_router_meta " +
-            "where router_id = #{routerId} " +
-            "limit 1;")
     RouterMetaEntity findByRouterIdRouter(@Param("routerId") String routerId);
 
 }

@@ -1,9 +1,5 @@
 package io.github.kamarias.dbf.system.vo;
 
-import com.alibaba.fastjson2.JSON;
-import lombok.Builder;
-import lombok.Data;
-
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -14,8 +10,6 @@ import java.time.LocalDateTime;
  * @author wangyuxing@gogpay.cn
  * @date 2023/5/4 10:58
  */
-@Data
-@Builder
 public class UserVo implements Serializable {
 
     private static final long serialVersionUID = 1L;

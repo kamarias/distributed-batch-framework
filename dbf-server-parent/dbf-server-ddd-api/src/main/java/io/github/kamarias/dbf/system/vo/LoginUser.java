@@ -4,12 +4,19 @@ import io.github.kamarias.bean.AuthLogin;
 
 import java.io.Serializable;
 
+
 public class LoginUser extends AuthLogin implements Serializable {
 
     /**
      * 登录用户名
      */
-    private String name;
+    private String nickName;
+
+    /**
+     * 账号
+     */
+    private String account;
+
 
     /**
      * 登录邮箱地址
@@ -17,12 +24,25 @@ public class LoginUser extends AuthLogin implements Serializable {
     private String email;
 
 
-    public String getName() {
-        return name;
+    /**
+     * 电话号码
+     */
+    private String phone;
+
+    public String getNickName() {
+        return nickName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setNickName(String nickName) {
+        this.nickName = nickName;
+    }
+
+    public String getAccount() {
+        return account;
+    }
+
+    public void setAccount(String account) {
+        this.account = account;
     }
 
     public String getEmail() {
@@ -33,5 +53,12 @@ public class LoginUser extends AuthLogin implements Serializable {
         this.email = email;
     }
 
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
 
 }

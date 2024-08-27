@@ -1,12 +1,13 @@
 package io.github.kamarias.dbf.system.controller;
 
-import io.github.kamarias.dbf.system.context.LoginContext;
+import io.github.kamarias.dbf.system.context.LoginUserContext;
+import io.github.kamarias.dbf.system.model.LoginModel;
 import io.github.kamarias.dbf.system.service.LoginService;
 import io.github.kamarias.dbf.system.translate.LoginControllerTranslate;
 import io.github.kamarias.dbf.system.vo.LoginUser;
 import io.github.kamarias.dbf.system.vo.LoginVo;
 import io.github.kamarias.dto.AjaxResult;
-import io.github.kamarias.dto.ContextResponse;
+import io.github.kamarias.dto.DDDContext;
 import io.github.kamarias.token.AuthTokenService;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -35,12 +36,12 @@ public class LoginController {
      */
     @PostMapping("/login")
     public AjaxResult<Object> login(@RequestBody @Validated LoginVo form) {
-        LoginContext loginContext = translate.toLoginContextByLoginVo(form);
-        ContextResponse<LoginContext> response = loginService.login(loginContext);
-        if (response.isError()) {
-            return AjaxResult.error(response.getMsg());
+        LoginModel loginVo = translate.toLoginModelByByLoginVo(form);
+        DDDContext<LoginModel, LoginUserContext> context = loginService.login(DDDContext.request(loginVo));
+        if (context.isError()) {
+            return AjaxResult.error(context.getMsg());
         }
-        LoginUser loginUser = translate.toLoginUserByLoginContext(loginContext);
+        LoginUser loginUser = translate.toLoginUserByLoginModel(context.getResponse().getData());
         String token = tokenService.createToken(loginUser);
         return AjaxResult.success("success", token);
     }

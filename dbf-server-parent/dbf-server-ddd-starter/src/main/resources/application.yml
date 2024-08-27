@@ -1,5 +1,5 @@
 server:
-  port: 8081
+  port: 8990
 
 
 spring:
@@ -39,13 +39,14 @@ spring:
 
   # redis 配置
   redis:
-    #    host: 10.10.9.102
-    host: 192.168.43.10
-    port: 6379
-    #    password: gqBN21kmMy221
-    password: 970699
+    host: 124.222.105.58
+#    host: 192.168.43.10
+    port: 6380
+#    port: 6379
+    password: requirepass1234
+#    password: 970699
     timeout: 15000
-    database: 0
+    database: 10
     client-type: lettuce
     lettuce:
       pool:

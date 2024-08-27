@@ -1,16 +1,18 @@
 package io.github.kamarias.dbf.system.domain;
 
+import io.github.kamarias.dbf.system.dto.RoleDto;
 import io.github.kamarias.dbf.system.dto.UserDto;
 import io.github.kamarias.dbf.system.gateway.UserRoleStoreGateway;
 import io.github.kamarias.dbf.system.gateway.UserStoreGateway;
+import io.github.kamarias.dbf.system.model.RoleModel;
 import io.github.kamarias.dbf.system.model.UserModel;
 import io.github.kamarias.dbf.system.translate.UserDomainTranslate;
-import io.github.kamarias.dto.ContextResponse;
+import io.github.kamarias.dto.DDDContext;
 import io.github.kamarias.utils.regular.RegularUtils;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
@@ -40,7 +42,7 @@ public class UserDomainService {
      * @param account 用户账号，可以是电话号码、邮箱或账号名
      * @return 返回UserModel对象，如果没有找到匹配的用户，则返回 null
      */
-    public ContextResponse<UserModel> findUser(String account) {
+    public DDDContext<String, UserModel> findUser(String account) {
         UserDto userDto;
         if (RegularUtils.verifyPhoneNumber(account)) {
             userDto = userStoreGateway.selectUserByPhone(account);
@@ -49,41 +51,45 @@ public class UserDomainService {
         } else {
             userDto = userStoreGateway.selectUserByAccount(account);
         }
-
-        return Objects.isNull(userDto) ? ContextResponse.error("查询用户不存在") :
-                ContextResponse.success(translate.toUserModelByUserDto(userDto));
+        return Objects.isNull(userDto) ? DDDContext.error("查询用户不存在") : DDDContext.success(translate.toUserModelByUserDto(userDto));
     }
 
 
-    public ContextResponse<Void> matchesPassword(String loginPassWord, String databasePassWord) {
+    public DDDContext<Void, Void> matchesPassword(String loginPassWord, String databasePassWord) {
         // @TODO 后续引入加密算法，当前数据库密钥先不加密
 
         return loginPassWord.equals(databasePassWord) ?
-                ContextResponse.success() : ContextResponse.error("密码匹配失败");
+                DDDContext.success() : DDDContext.error("密码匹配失败");
     }
 
-    public ContextResponse<Void> createUserVerify(UserModel model) {
+    public DDDContext<Void, Void> createUserVerify(UserModel model) {
         if (userStoreGateway.phoneExists(model.getPhone())) {
-            return ContextResponse.error("电话号码已存在");
+            return DDDContext.error("电话号码已存在");
         }
         if (userStoreGateway.accountExists(model.getAccount())) {
-            return ContextResponse.error("账号已存在");
+            return DDDContext.error("账号已存在");
         }
         if (userStoreGateway.emailExists(model.getEmail())) {
-            return ContextResponse.error("邮箱已存在");
+            return DDDContext.error("邮箱已存在");
         }
-        return ContextResponse.success();
+        return DDDContext.success();
     }
 
 
-    public ContextResponse<Void> createUser(UserModel model) {
+    public DDDContext<Void, Void> createUser(UserModel model) {
         UserDto userDto = translate.toUserDtoByUserModel(model);
         if (!userStoreGateway.creatUser(userDto)) {
-            return ContextResponse.error("创建用户失败");
+            return DDDContext.error("创建用户失败");
         }
         // 权限信息后续补充
         Set<String> roleIds = new HashSet<>();
         userRoleStoreGateway.maintainUserRole(model.getId(), roleIds);
-        return ContextResponse.success();
+        return DDDContext.success();
+    }
+
+    public DDDContext<Void, List<RoleModel>> findUserRole(String userId) {
+        List<RoleDto> roles = userRoleStoreGateway.findRoleListByAccount(userId);
+        List<RoleModel> rms = translate.toRoleModelListByRoleDtoList(roles);
+        return DDDContext.success(rms);
     }
 }

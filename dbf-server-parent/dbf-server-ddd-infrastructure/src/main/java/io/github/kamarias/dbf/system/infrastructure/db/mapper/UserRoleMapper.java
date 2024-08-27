@@ -3,6 +3,7 @@ package io.github.kamarias.dbf.system.infrastructure.db.mapper;
 
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import io.github.kamarias.dbf.system.entity.RoleEntity;
 import io.github.kamarias.dbf.system.entity.UserRoleEntity;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -46,6 +47,15 @@ public interface UserRoleMapper extends BaseMapper<UserRoleEntity> {
 
 
     int batchInsert(List<UserRoleEntity> userRoleEntityList);
+
+    /**
+     * 查询角色可选选项
+     * @return 返回可选选项
+     */
+    @Select("select r.id, r.name, r.code, r.description " +
+            "from t_role r join t_user_role tur on r.id = tur.role_id " +
+            "where del_flag = 0 and tur.user_id = #{userId}")
+    List<RoleEntity> findRoleListByUserId(@Param("userId") String userId);
 
 
 }

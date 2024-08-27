@@ -4,7 +4,9 @@ import io.github.kamarias.bean.AuthLogin;
 import io.github.kamarias.exception.TokenAnalyzeException;
 import io.github.kamarias.properties.TokenProperties;
 import io.github.kamarias.utils.http.ServletUtils;
-import io.jsonwebtoken.*;
+import io.jsonwebtoken.JwtBuilder;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -141,7 +143,6 @@ public class RedisAuthTokenService implements AuthTokenService {
     }
 
 
-
     private <T extends AuthLogin> String generateJwtToken(T o) {
         Assert.notNull(o.getRoles(), "登录对象角色不能为空");
         Assert.notNull(o.getPermissions(), "登录对象权限不能为空");
@@ -261,7 +262,7 @@ public class RedisAuthTokenService implements AuthTokenService {
         HttpServletRequest request = ServletUtils.getRequest();
         String header = request.getHeader(tokenProperties.getAuthHeader());
         if (StringUtils.isEmpty(header)) {
-            LOGGER.info("登录令牌已过期：授权请求头为空");
+            LOGGER.debug("登录令牌已过期：授权请求头为空");
             throw new TokenAnalyzeException("登录令牌已过期");
         }
         return analyzeRedisToken(header);

@@ -2,16 +2,26 @@ package io.github.kamarias.dbf.system.controller;
 
 
 import io.github.kamarias.annotation.RequiresPermissions;
+import io.github.kamarias.bean.AuthLogin;
+import io.github.kamarias.dbf.system.context.LoginUserContext;
+import io.github.kamarias.dbf.system.context.RoleContext;
 import io.github.kamarias.dbf.system.context.UserContext;
 import io.github.kamarias.dbf.system.service.UserService;
+import io.github.kamarias.dbf.system.translate.LoginControllerTranslate;
 import io.github.kamarias.dbf.system.translate.UserControllerTranslate;
 import io.github.kamarias.dbf.system.vo.AddUserVo;
+import io.github.kamarias.dbf.system.vo.LoginUser;
+import io.github.kamarias.dbf.system.vo.RoleVO;
 import io.github.kamarias.dto.AjaxResult;
-import io.github.kamarias.dto.ContextResponse;
+import io.github.kamarias.dto.DDDContext;
+import io.github.kamarias.utils.SecurityUtils;
 import io.github.kamarias.web.annotation.RepeatSubmit;
 import io.github.kamarias.web.annotation.WebLog;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.Objects;
 
 /**
  * @author wangyuxing@gogpay.cn
@@ -26,10 +36,13 @@ public class UserController {
 
     private final UserControllerTranslate translate;
 
+    private final LoginControllerTranslate loginControllerTranslate;
 
-    public UserController(UserService userService, UserControllerTranslate translate) {
+
+    public UserController(UserService userService, UserControllerTranslate translate, LoginControllerTranslate loginControllerTranslate) {
         this.userService = userService;
         this.translate = translate;
+        this.loginControllerTranslate = loginControllerTranslate;
     }
 
 
@@ -49,7 +62,7 @@ public class UserController {
     @RequiresPermissions("system:user:add")
     public AjaxResult<Object> addUser(@RequestBody @Validated AddUserVo form) {
         UserContext userContext = translate.toUserContextByAddUserVo(form);
-        ContextResponse<Void> response = userService.creatUser(userContext);
+        DDDContext<Void, Void> response = userService.creatUser(userContext);
         if (response.isError()) {
             return AjaxResult.error(response.getMsg());
         }
@@ -104,16 +117,20 @@ public class UserController {
 //    }
 
 
-//    /**
-//     * 获取登录用户信息
-//     *
-//     * @return 返回当前登录的用户信息
-//     */
-//    @WebLog("获取登录用户信息")
-//    @PostMapping("/getLoginUserInfo")
-//    public <T extends LoginObject> AjaxResult<T> getLoginUserInfo() {
-//        return AjaxResult.success(userService.getLoginUser());
-//    }
+    /**
+     * 获取登录用户信息
+     *
+     * @return 返回当前登录的用户信息
+     */
+    @WebLog("获取登录用户信息")
+    @PostMapping("/getLoginUserInfo")
+    public AjaxResult<Object> getLoginUserInfo() {
+        LoginUser loginUser = SecurityUtils.getLoginUser();
+        if (Objects.isNull(loginUser)) {
+            AjaxResult.error("获取用户信息异常");
+        }
+        return AjaxResult.success(loginUser);
+    }
 //
 //    /**
 //     * 重置用户密码
@@ -127,16 +144,24 @@ public class UserController {
 //    public AjaxResult<Boolean> resetPassWord(@RequestBody @Validated ResetPassWordForm form) {
 //        return AjaxResult.success(userService.resetPassword(form.getId(), form.getPassWord()));
 //    }
-//
-//    /**
-//     * 获取登录用户可选角色列表
-//     *
-//     * @return 返回角色列表
-//     */
-//    @WebLog("获取登录用户可选角色列表")
-//    @GetMapping("/getLoginUserRole")
-//    public AjaxResult<List<RoleOptionsVO>> getLoginUserRole() {
-//        return AjaxResult.success(userService.getLoginUserRole());
-//    }
+
+
+    /**
+     * 获取登录用户可选角色列表
+     *
+     * @return 返回角色列表
+     */
+    @WebLog("获取登录用户可选角色列表")
+    @GetMapping("/getLoginUserRole")
+    public AjaxResult<Object> getLoginUserRole() {
+        LoginUser loginUser = SecurityUtils.getLoginUser();
+        LoginUserContext loginUserContext = loginControllerTranslate.toLoginUserContextByLoginUser(loginUser);
+        DDDContext<Void, List<RoleContext>> ctx = userService.getLoginUserRole(DDDContext.request(loginUserContext));
+        if (ctx.isError()) {
+            return AjaxResult.error(ctx.getMsg());
+        }
+        List<RoleVO> response = translate.toRoleVOListByRoleContextList(ctx.getResponse().getData());
+        return AjaxResult.success(response);
+    }
 
 }

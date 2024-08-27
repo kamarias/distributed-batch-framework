@@ -75,7 +75,6 @@ public class RouterMetaEntity extends BaseIdEntity implements Serializable {
 
     /**
      * 页面加载动画 (存 json)
-     * @see RouterTransitionVO
      */
     private String transition;
 
