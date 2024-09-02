@@ -250,7 +250,7 @@ const userFormRef = ref();
             </el-form-item>
           </el-col>
           <el-col :span="11">
-            <el-form-item label="密码" prop="passWord" v-show="userForm.id === undefined">
+            <el-form-item label="密码" prop="passWord" v-if="userForm.id === undefined">
               <el-input v-model="userForm.passWord"
                         placeholder="请输入密码"
                         clearable

@@ -39,7 +39,6 @@ public class UpdateUserVo {
     /**
      * 密码
      */
-    @NotBlank(message = "电话号码不能为空")
     private String passWord;
 
     /**

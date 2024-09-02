@@ -183,11 +183,10 @@ export function useUser() {
    * @param formEl 表单实例
    */
   const handleSubmit = async (formEl: FormInstance | undefined) => {
-    console.log(23)
     if (!formEl) {
       return
     }
-    await formEl.validate(async (valid) => {
+    await formEl.validate(async (valid,fields) => {
       if (valid) {
         if (userForm.id === undefined) {
           const {data, msg} = await addUser(toRaw(userForm))
