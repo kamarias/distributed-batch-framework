@@ -45,8 +45,6 @@ public class LoginController {
         }
         LoginUser loginUser = translate.toLoginUserByLoginModel(context.getResponse().getData());
         String token = tokenService.createToken(loginUser);
-        System.out.println("++++++++++++++++++");
-        System.out.println(loginUser);
         return AjaxResult.success("success", token);
     }
 

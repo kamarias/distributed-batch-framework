@@ -1,17 +1,13 @@
-package io.github.kamarias.dbf.system.context;
+package io.github.kamarias.dbf.system.vo;
 
-
+import java.io.Serializable;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.Set;
+
+public class UserTableVo implements Serializable {
 
 
-public class UserContext {
-
-    /**
-     * 用户Id
-     */
     private String id;
+
 
     /**
      * 用户昵称
@@ -35,10 +31,6 @@ public class UserContext {
      */
     private String phone;
 
-    /**
-     * 密码
-     */
-    private String passWord;
 
     /**
      * 头像
@@ -64,28 +56,6 @@ public class UserContext {
      * 备注
      */
     private String remark;
-
-
-    /**
-     * 创建时间
-     */
-    private LocalDateTime createTime;
-
-
-    /**
-     * 更新时间
-     */
-    private LocalDateTime updateTime;
-
-    private Set<String> roleIds;
-
-    public Set<String> getRoleIds() {
-        return roleIds;
-    }
-
-    public void setRoleIds(Set<String> roleIds) {
-        this.roleIds = roleIds;
-    }
 
     public String getId() {
         return id;
@@ -125,14 +95,6 @@ public class UserContext {
 
     public void setPhone(String phone) {
         this.phone = phone;
-    }
-
-    public String getPassWord() {
-        return passWord;
-    }
-
-    public void setPassWord(String passWord) {
-        this.passWord = passWord;
     }
 
     public String getAvatar() {
@@ -175,20 +137,4 @@ public class UserContext {
         this.remark = remark;
     }
 
-
-    public LocalDateTime getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(LocalDateTime createTime) {
-        this.createTime = createTime;
-    }
-
-    public LocalDateTime getUpdateTime() {
-        return updateTime;
-    }
-
-    public void setUpdateTime(LocalDateTime updateTime) {
-        this.updateTime = updateTime;
-    }
 }

@@ -16,6 +16,9 @@ public interface UserRoleStoreGateway {
      */
     boolean maintainUserRole(String userId, Set<String> roles);
 
+
+    boolean removeUserRoleByUserId(String userId);
+
     /**
      * 根据用户账户查询用户的角色信息集合
      *
@@ -24,5 +27,7 @@ public interface UserRoleStoreGateway {
      */
     List<RoleDto> findRoleListByAccount(String account);
 
+
+    Set<String> getRoleIdsByUserId(String userId);
 
 }

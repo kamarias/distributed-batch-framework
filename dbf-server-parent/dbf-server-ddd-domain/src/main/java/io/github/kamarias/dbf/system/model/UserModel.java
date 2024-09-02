@@ -2,6 +2,7 @@ package io.github.kamarias.dbf.system.model;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Set;
 
 public class UserModel {
 
@@ -64,25 +65,27 @@ public class UserModel {
      */
     private String remark;
 
-    /**
-     * 创建人
-     */
-    private String createBy;
 
     /**
      * 创建时间
      */
     private LocalDateTime createTime;
 
-    /**
-     * 更新人
-     */
-    private String updateBy;
 
     /**
      * 更新时间
      */
     private LocalDateTime updateTime;
+
+    private Set<String> roleIds;
+
+    public Set<String> getRoleIds() {
+        return roleIds;
+    }
+
+    public void setRoleIds(Set<String> roleIds) {
+        this.roleIds = roleIds;
+    }
 
     public String getId() {
         return id;
@@ -172,14 +175,6 @@ public class UserModel {
         this.remark = remark;
     }
 
-    public String getCreateBy() {
-        return createBy;
-    }
-
-    public void setCreateBy(String createBy) {
-        this.createBy = createBy;
-    }
-
     public LocalDateTime getCreateTime() {
         return createTime;
     }
@@ -188,13 +183,6 @@ public class UserModel {
         this.createTime = createTime;
     }
 
-    public String getUpdateBy() {
-        return updateBy;
-    }
-
-    public void setUpdateBy(String updateBy) {
-        this.updateBy = updateBy;
-    }
 
     public LocalDateTime getUpdateTime() {
         return updateTime;

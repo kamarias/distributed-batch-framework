@@ -11,6 +11,9 @@ import io.github.kamarias.dbf.system.infrastructure.db.store.UserRoleServiceStor
 import io.github.kamarias.dbf.system.translate.RoleStoreTranslate;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
+import java.util.List;
+
 @Service
 public class RoleStoreGatewayImpl implements RoleStoreGateway {
 
@@ -41,5 +44,11 @@ public class RoleStoreGatewayImpl implements RoleStoreGateway {
     public RoleDto findRoleByUserIdAndRoleId(String userId, String roleId) {
         RoleEntity roleEntity = roleMapper.randomGetRoleByUserIdAndRoleId(userId, roleId);
         return roleStoreTranslate.toRoleDtoByRoleEntity(roleEntity);
+    }
+
+    @Override
+    public List<RoleDto> getAllRole() {
+        List<RoleEntity> list = roleServiceStore.list();
+        return roleStoreTranslate.toRoleDtoListByRoleEntityList(list);
     }
 }

@@ -1,16 +1,14 @@
-package io.github.kamarias.dbf.system.context;
+package io.github.kamarias.dbf.system.vo;
 
+import javax.validation.constraints.NotBlank;
+import java.util.List;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.Set;
-
-
-public class UserContext {
+public class UpdateUserVo {
 
     /**
      * 用户Id
      */
+    @NotBlank(message = "id不能为空")
     private String id;
 
     /**
@@ -22,22 +20,26 @@ public class UserContext {
     /**
      * 账号
      */
+    @NotBlank(message = "账号不能为空")
     private String account;
 
 
     /**
      * 邮箱
      */
+    @NotBlank(message = "邮箱不能为空")
     private String email;
 
     /**
      * 电话号码
      */
+    @NotBlank(message = "电话号码不能为空")
     private String phone;
 
     /**
      * 密码
      */
+    @NotBlank(message = "电话号码不能为空")
     private String passWord;
 
     /**
@@ -51,41 +53,16 @@ public class UserContext {
     private Integer gender;
 
     /**
-     * 生日
-     */
-    private LocalDate birthday;
-
-    /**
-     * 用户状态
-     */
-    private Integer status;
-
-    /**
      * 备注
      */
     private String remark;
 
 
     /**
-     * 创建时间
+     * 角色Id的集合
      */
-    private LocalDateTime createTime;
+    private List<String> roleIds;
 
-
-    /**
-     * 更新时间
-     */
-    private LocalDateTime updateTime;
-
-    private Set<String> roleIds;
-
-    public Set<String> getRoleIds() {
-        return roleIds;
-    }
-
-    public void setRoleIds(Set<String> roleIds) {
-        this.roleIds = roleIds;
-    }
 
     public String getId() {
         return id;
@@ -107,7 +84,7 @@ public class UserContext {
         return account;
     }
 
-    public void setAccount(String account) {
+    public void setAccount( String account) {
         this.account = account;
     }
 
@@ -115,7 +92,7 @@ public class UserContext {
         return email;
     }
 
-    public void setEmail(String email) {
+    public void setEmail( String email) {
         this.email = email;
     }
 
@@ -151,22 +128,6 @@ public class UserContext {
         this.gender = gender;
     }
 
-    public LocalDate getBirthday() {
-        return birthday;
-    }
-
-    public void setBirthday(LocalDate birthday) {
-        this.birthday = birthday;
-    }
-
-    public Integer getStatus() {
-        return status;
-    }
-
-    public void setStatus(Integer status) {
-        this.status = status;
-    }
-
     public String getRemark() {
         return remark;
     }
@@ -175,20 +136,12 @@ public class UserContext {
         this.remark = remark;
     }
 
-
-    public LocalDateTime getCreateTime() {
-        return createTime;
+    public List<String> getRoleIds() {
+        return roleIds;
     }
 
-    public void setCreateTime(LocalDateTime createTime) {
-        this.createTime = createTime;
+    public void setRoleIds(List<String> roleIds) {
+        this.roleIds = roleIds;
     }
 
-    public LocalDateTime getUpdateTime() {
-        return updateTime;
-    }
-
-    public void setUpdateTime(LocalDateTime updateTime) {
-        this.updateTime = updateTime;
-    }
 }

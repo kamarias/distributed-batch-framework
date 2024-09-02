@@ -10,9 +10,7 @@ import io.github.kamarias.dbf.system.infrastructure.db.store.UserRoleServiceStor
 import io.github.kamarias.dbf.system.translate.RoleStoreTranslate;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -35,10 +33,13 @@ public class UserRoleStoreGatewayImpl implements UserRoleStoreGateway {
 
     @Override
     public boolean maintainUserRole(String userId, Set<String> roles) {
-        userRoleServiceStore.remove(Wrappers.lambdaQuery(UserRoleEntity.class)
-                .eq(UserRoleEntity::getUserId, userId));
-        userRoleMapper.batchInsert(roles.stream().parallel().map(x -> {
+        removeUserRoleByUserId(userId);
+        if (Objects.isNull(roles) || roles.isEmpty()) {
+            return true;
+        }
+        userRoleMapper.batchInsert(roles.stream().map(x -> {
             UserRoleEntity item = new UserRoleEntity();
+            item.setId(UUID.randomUUID().toString().replaceAll("-", ""));
             item.setUserId(userId);
             item.setRoleId(x);
             return item;
@@ -54,5 +55,16 @@ public class UserRoleStoreGatewayImpl implements UserRoleStoreGateway {
         return roleDtoList;
     }
 
+    @Override
+    public boolean removeUserRoleByUserId(String userId) {
+        return userRoleServiceStore.remove(Wrappers.lambdaQuery(UserRoleEntity.class)
+                .eq(UserRoleEntity::getUserId, userId));
+    }
 
+
+    @Override
+    public Set<String> getRoleIdsByUserId(String userId) {
+        Set<String> userRoles = userRoleMapper.getRoleIdsByUserId(userId);
+        return Objects.isNull(userRoles) ? Collections.emptySet() : userRoles;
+    }
 }

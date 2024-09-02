@@ -1,9 +1,20 @@
 package io.github.kamarias.dbf.system.gateway;
 
 import io.github.kamarias.dbf.system.dto.UserDto;
+import io.github.kamarias.dbf.system.model.QueryUserModel;
+import io.github.kamarias.vo.PageVO;
+
+import java.util.List;
 
 public interface UserStoreGateway {
 
+    /**
+     * 通过电话号码获取用户信息
+     *
+     * @param userId 用户Id
+     * @return 返回查找到的用户
+     */
+    UserDto selectUserByUserId(String userId);
 
     /**
      * 通过电话号码获取用户信息
@@ -38,7 +49,12 @@ public interface UserStoreGateway {
     boolean emailExists(String phone);
 
 
-    boolean creatUser(UserDto userDto);
+    UserDto creatUser(UserDto userDto);
 
 
+    Boolean updateUser(UserDto userDto);
+
+    PageVO<UserDto> queryUserTableList(QueryUserModel qum);
+
+    boolean deleteUserByUserId(String userId);
 }

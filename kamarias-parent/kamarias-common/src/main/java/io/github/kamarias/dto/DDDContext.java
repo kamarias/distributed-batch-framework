@@ -37,6 +37,7 @@ public class DDDContext<Q, R> {
 
     /**
      * 创建一个成功的DDDContext对象
+     *
      * @return 返回一个成功状态的DDDContext对象，带有默认消息和空的请求与响应
      */
     public static <Q, R> DDDContext<Q, R> success() {
@@ -45,6 +46,7 @@ public class DDDContext<Q, R> {
 
     /**
      * 创建一个带有自定义消息的成功DDDContext对象
+     *
      * @param msg 自定义的成功消息
      * @return 返回一个成功状态的DDDContext对象，带有自定义消息和空的请求与响应
      */
@@ -54,25 +56,28 @@ public class DDDContext<Q, R> {
 
     /**
      * 创建一个包含请求的成功的DDDContext对象
+     *
      * @param request 请求参数
      * @return 返回一个成功状态的DDDContext对象，带有请求参数和空的响应
      */
-    public static <Q, R> DDDContext<Q, R> request(Q request) {
+    public static <Q> DDDContext<Q, Void> request(Q request) {
         return new DDDContext<>(SUCCESS_CODE, "处理成功", ContextRequest.create(request), null);
     }
 
     /**
      * 创建一个包含请求和自定义消息的成功的DDDContext对象
-     * @param msg 自定义消息
+     *
+     * @param msg     自定义消息
      * @param request 请求参数
      * @return 返回一个成功状态的DDDContext对象，带有请求参数和自定义消息
      */
-    public static <Q, R> DDDContext<Q, R> request(String msg, Q request) {
+    public static <Q> DDDContext<Q, Void> request(String msg, Q request) {
         return new DDDContext<>(SUCCESS_CODE, msg, ContextRequest.create(request), null);
     }
 
     /**
      * 创建一个包含响应的成功的DDDContext对象
+     *
      * @param response 响应参数
      * @return 返回一个成功状态的DDDContext对象，带有响应参数和空的请求
      */
@@ -82,7 +87,8 @@ public class DDDContext<Q, R> {
 
     /**
      * 创建一个带有自定义消息和响应的成功的DDDContext对象
-     * @param msg 自定义消息
+     *
+     * @param msg      自定义消息
      * @param response 响应参数
      * @return 返回一个成功状态的DDDContext对象，带有自定义消息和响应参数
      */
@@ -92,7 +98,8 @@ public class DDDContext<Q, R> {
 
     /**
      * 创建一个包含请求和响应的成功的DDDContext对象
-     * @param request 请求参数
+     *
+     * @param request  请求参数
      * @param response 响应参数
      * @return 返回一个成功状态的DDDContext对象，带有请求和响应参数
      */
@@ -102,8 +109,9 @@ public class DDDContext<Q, R> {
 
     /**
      * 创建一个带有自定义消息、请求和响应的成功的DDDContext对象
-     * @param msg 自定义消息
-     * @param request 请求参数
+     *
+     * @param msg      自定义消息
+     * @param request  请求参数
      * @param response 响应参数
      * @return 返回一个成功状态的DDDContext对象，带有自定义消息、请求和响应参数
      */
@@ -113,6 +121,7 @@ public class DDDContext<Q, R> {
 
     /**
      * 创建一个错误的DDDContext对象
+     *
      * @return 返回一个错误状态的DDDContext对象，带有默认消息和空的请求与响应
      */
     public static <Q, R> DDDContext<Q, R> error() {
@@ -121,6 +130,7 @@ public class DDDContext<Q, R> {
 
     /**
      * 创建一个带有自定义消息的错误DDDContext对象
+     *
      * @param msg 自定义的错误消息
      * @return 返回一个错误状态的DDDContext对象，带有自定义消息和空的请求与响应
      */
@@ -130,6 +140,7 @@ public class DDDContext<Q, R> {
 
     /**
      * 创建一个包含响应的错误DDDContext对象
+     *
      * @param response 响应参数
      * @return 返回一个错误状态的DDDContext对象，带有未知错误消息和响应参数
      */
@@ -141,7 +152,7 @@ public class DDDContext<Q, R> {
      * 创建一个带有自定义消息和响应的错误DDDContext对象
      * 此方法专用于处理需要返回错误信息和相关响应数据的情况
      *
-     * @param msg 自定义的错误消息
+     * @param msg      自定义的错误消息
      * @param response 响应数据
      * @return 返回一个错误状态的DDDContext对象，带有自定义消息和响应参数
      */
@@ -151,7 +162,8 @@ public class DDDContext<Q, R> {
 
     /**
      * 创建一个默认消息错误的 DDDContext 上下文，包含请求和响应
-     * @param request 请求参数
+     *
+     * @param request  请求参数
      * @param response 响应参数
      * @return 返回错误的响应上下文
      */
@@ -161,8 +173,9 @@ public class DDDContext<Q, R> {
 
     /**
      * 创建一个错误的 DDDContext 上下文，包含自定义消息、请求和响应
-     * @param msg 错误消息
-     * @param request 请求参数
+     *
+     * @param msg      错误消息
+     * @param request  请求参数
      * @param response 响应参数
      * @return 返回错误的响应上下文
      */

@@ -2,19 +2,15 @@ package io.github.kamarias.dbf.system.controller;
 
 
 import io.github.kamarias.annotation.RequiresPermissions;
-import io.github.kamarias.bean.AuthLogin;
-import io.github.kamarias.dbf.system.context.LoginUserContext;
-import io.github.kamarias.dbf.system.context.RoleContext;
-import io.github.kamarias.dbf.system.context.UserContext;
+import io.github.kamarias.dbf.system.context.*;
 import io.github.kamarias.dbf.system.service.UserService;
 import io.github.kamarias.dbf.system.translate.LoginControllerTranslate;
 import io.github.kamarias.dbf.system.translate.UserControllerTranslate;
-import io.github.kamarias.dbf.system.vo.AddUserVo;
-import io.github.kamarias.dbf.system.vo.LoginUser;
-import io.github.kamarias.dbf.system.vo.RoleVO;
+import io.github.kamarias.dbf.system.vo.*;
 import io.github.kamarias.dto.AjaxResult;
 import io.github.kamarias.dto.DDDContext;
 import io.github.kamarias.utils.SecurityUtils;
+import io.github.kamarias.vo.PageVO;
 import io.github.kamarias.web.annotation.RepeatSubmit;
 import io.github.kamarias.web.annotation.WebLog;
 import org.springframework.validation.annotation.Validated;
@@ -46,15 +42,20 @@ public class UserController {
     }
 
 
-//    /**
-//     * 查询用户信息列表
-//     */
-//    @WebLog("查询用户信息列表")
-//    @PostMapping("/list")
-//    @RequiresPermissions("system:user:query")
-//    public AjaxResult<PageVO<UserEntity>> getList(@RequestBody @Validated QueryUserForm form) {
-//        return AjaxResult.success(userService.getList(form));
-//    }
+    /**
+     * 查询用户信息列表
+     */
+    @WebLog("查询用户信息列表")
+    @PostMapping("/list")
+    @RequiresPermissions("system:user:query")
+    public AjaxResult<Object> getList(@RequestBody @Validated QueryUserVo form) {
+        QueryUserContext context = translate.toQueryUserVoByQueryUserContext(form);
+        DDDContext<QueryUserContext, PageVO<UserTableContext>> userList = userService.queryUserManageList(DDDContext.request(context));
+        if (userList.isError()) {
+            return AjaxResult.error(userList.getMsg());
+        }
+        return AjaxResult.success(userList.getResponse().getData());
+    }
 
     @WebLog("添加用户信息")
     @PostMapping("/add")
@@ -62,59 +63,81 @@ public class UserController {
     @RequiresPermissions("system:user:add")
     public AjaxResult<Object> addUser(@RequestBody @Validated AddUserVo form) {
         UserContext userContext = translate.toUserContextByAddUserVo(form);
-        DDDContext<Void, Void> response = userService.creatUser(userContext);
+        DDDContext<Void, Void> response = userService.creatUser(DDDContext.request(userContext));
         if (response.isError()) {
             return AjaxResult.error(response.getMsg());
         }
         return AjaxResult.success(true);
     }
 
-//    @WebLog("更新用户信息")
-//    @PutMapping("/update")
-//    @RepeatSubmit
-//    @RequiresPermissions("system:user:edit")
-//    public AjaxResult<Boolean> updateUser(@RequestBody @Validated UpdateUserForm form) {
-//        return AjaxResult.success(userService.updateUser(form));
-//    }
+    @WebLog("更新用户信息")
+    @PutMapping("/update")
+    @RepeatSubmit
+    @RequiresPermissions("system:user:edit")
+    public AjaxResult<Object> updateUser(@RequestBody @Validated UpdateUserVo form) {
+        UserContext userContext = translate.toUserContextByUpdateUserVo(form);
+        DDDContext<Void, Void> response = userService.updateUser(DDDContext.request(userContext));
+        if (response.isError()) {
+            return AjaxResult.error(response.getMsg());
+        }
+        return AjaxResult.success(true);
+    }
 
 
-//    /**
-//     * 更新用户状态
-//     */
-//    @WebLog("更新用户状态")
-//    @PostMapping("/state")
-//    @RequiresPermissions("system:user:status")
-//    public AjaxResult<Boolean> updateStatus(@RequestBody @Validated IdForm form) {
-//        return AjaxResult.success(userService.updateStatus(form));
-//    }
+    /**
+     * 更新用户状态
+     */
+    @WebLog("更新用户状态")
+    @PostMapping("/state")
+    @RequiresPermissions("system:user:status")
+    public AjaxResult<Object> updateStatus(@RequestBody @Validated IdVo form) {
+        UserContext uc = translate.toUserContextByIdVo(form);
+        DDDContext<Void, Boolean> resContext = userService.updateStatus(DDDContext.request(uc));
+        if (resContext.isError()) {
+            return AjaxResult.error(resContext.getMsg());
+        }
+        return AjaxResult.success(resContext.getResponse().getData());
+    }
 
 
-//    /**
-//     * 删除用户信息
-//     *
-//     * @param form id表单
-//     * @return 返回结果
-//     */
-//    @WebLog("删除用户信息")
-//    @DeleteMapping("/delete")
-//    @RepeatSubmit
-//    @RequiresPermissions("system:user:del")
-//    public AjaxResult<Boolean> deleteUser(@RequestBody @Validated IdForm form) {
-//        return AjaxResult.success(userService.deleteUser(form));
-//    }
+    /**
+     * 删除用户信息
+     *
+     * @param form id表单
+     * @return 返回结果
+     */
+    @WebLog("删除用户信息")
+    @DeleteMapping("/delete")
+    @RepeatSubmit
+    @RequiresPermissions("system:user:del")
+    public AjaxResult<Object> deleteUser(@RequestBody @Validated IdVo form) {
+        UserContext uc = translate.toUserContextByIdVo(form);
+        DDDContext<Void, Boolean> resContext = userService.deleteUser(DDDContext.request(uc));
+        if (resContext.isError()) {
+            return AjaxResult.error(resContext.getMsg());
+        }
+        return AjaxResult.success(resContext.getResponse().getData());
+    }
 
 
-//    /**
-//     * 通过用户Id获取用户详细详细
-//     *
-//     * @param form id表单
-//     * @return 返回结果
-//     */
-//    @WebLog("获取用户详细信息")
-//    @PostMapping("/getUserInfo")
-//    public AjaxResult<UpdateUserForm> getUserInfoById(@RequestBody @Validated IdForm form) {
-//        return AjaxResult.success(userService.getUserInfoById(form));
-//    }
+    /**
+     * 通过用户Id获取用户详细详细
+     *
+     * @param form id表单
+     * @return 返回结果
+     */
+    @WebLog("获取用户详细信息")
+    @PostMapping("/getUserInfo")
+    public AjaxResult<Object> getUserInfoById(@RequestBody @Validated IdVo form) {
+        UserContext userContext = translate.toUserContextByIdVo(form);
+        DDDContext<Void, UserContext> rc = userService.getUserInfoById(DDDContext.request(userContext));
+        if (rc.isError()) {
+            return AjaxResult.error(rc.getMsg());
+        }
+        UpdateUserVo uuv = translate.toUpdateUSerVoByUserContext(rc.getResponse().getData());
+        uuv.setPassWord(null);
+        return AjaxResult.success(uuv);
+    }
 
 
     /**
@@ -131,19 +154,24 @@ public class UserController {
         }
         return AjaxResult.success(loginUser);
     }
-//
-//    /**
-//     * 重置用户密码
-//     *
-//     * @param form id表单
-//     * @return 返回结果
-//     */
-//    @WebLog("重置用户密码")
-//    @PostMapping("/resetPassWord")
-//    @RequiresPermissions("system:user:resetPwd")
-//    public AjaxResult<Boolean> resetPassWord(@RequestBody @Validated ResetPassWordForm form) {
-//        return AjaxResult.success(userService.resetPassword(form.getId(), form.getPassWord()));
-//    }
+
+    /**
+     * 重置用户密码
+     *
+     * @param form id表单
+     * @return 返回结果
+     */
+    @WebLog("重置用户密码")
+    @PostMapping("/resetPassWord")
+    @RequiresPermissions("system:user:resetPwd")
+    public AjaxResult<Object> resetPassWord(@RequestBody @Validated ResetPassWordVo form) {
+        ResetPassContext a = translate.toResetPassContextByResetPassWordVo(form);
+        DDDContext<Void, Boolean> resetPassword = userService.resetPassword(DDDContext.request(a));
+        if (resetPassword.isError()) {
+            return AjaxResult.error(resetPassword.getMsg());
+        }
+        return AjaxResult.success(resetPassword.getResponse().getData());
+    }
 
 
     /**

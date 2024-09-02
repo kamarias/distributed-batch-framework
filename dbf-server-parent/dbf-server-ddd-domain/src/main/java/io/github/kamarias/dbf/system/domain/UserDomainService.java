@@ -1,17 +1,27 @@
 package io.github.kamarias.dbf.system.domain;
 
+import io.github.kamarias.dbf.enums.BoolFlagEnum;
 import io.github.kamarias.dbf.system.dto.RoleDto;
 import io.github.kamarias.dbf.system.dto.UserDto;
 import io.github.kamarias.dbf.system.gateway.PermissionStoreGateway;
 import io.github.kamarias.dbf.system.gateway.RoleStoreGateway;
 import io.github.kamarias.dbf.system.gateway.UserRoleStoreGateway;
 import io.github.kamarias.dbf.system.gateway.UserStoreGateway;
+import io.github.kamarias.dbf.system.model.QueryUserModel;
 import io.github.kamarias.dbf.system.model.RoleModel;
 import io.github.kamarias.dbf.system.model.UserModel;
+import io.github.kamarias.dbf.system.model.UserTableModel;
 import io.github.kamarias.dbf.system.translate.UserDomainTranslate;
 import io.github.kamarias.dto.DDDContext;
 import io.github.kamarias.utils.regular.RegularUtils;
+import io.github.kamarias.vo.PageVO;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.TransactionExecution;
+import org.springframework.transaction.TransactionManager;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.config.TransactionManagementConfigUtils;
 
 import java.util.HashSet;
 import java.util.List;
@@ -31,6 +41,8 @@ public class UserDomainService {
     private final RoleStoreGateway roleStoreGateway;
 
     private final PermissionStoreGateway permissionStoreGateway;
+
+    private final BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
 
 
     public UserDomainService(UserDomainTranslate translate, UserStoreGateway userStoreGateway, UserRoleStoreGateway userRoleStoreGateway, RoleStoreGateway roleStoreGateway, PermissionStoreGateway permissionStoreGateway) {
@@ -64,13 +76,11 @@ public class UserDomainService {
 
 
     public DDDContext<Void, Void> matchesPassword(String loginPassWord, String databasePassWord) {
-        // @TODO 后续引入加密算法，当前数据库密钥先不加密
-
-        return loginPassWord.equals(databasePassWord) ?
-                DDDContext.success() : DDDContext.error("密码匹配失败");
+        boolean matches = bCryptPasswordEncoder.matches(loginPassWord, databasePassWord);
+        return matches ? DDDContext.success() : DDDContext.error("密码匹配失败");
     }
 
-    public DDDContext<Void, Void> createUserVerify(UserModel model) {
+    public DDDContext<Void, Void> insertUserVerify(UserModel model) {
         if (userStoreGateway.phoneExists(model.getPhone())) {
             return DDDContext.error("电话号码已存在");
         }
@@ -80,18 +90,24 @@ public class UserDomainService {
         if (userStoreGateway.emailExists(model.getEmail())) {
             return DDDContext.error("邮箱已存在");
         }
+        if (userStoreGateway.emailExists(model.getPassWord())) {
+            return DDDContext.error("用户密码为空");
+        }
         return DDDContext.success();
     }
 
 
+    @Transactional(rollbackFor = Exception.class)
     public DDDContext<Void, Void> createUser(UserModel model) {
         UserDto userDto = translate.toUserDtoByUserModel(model);
-        if (!userStoreGateway.creatUser(userDto)) {
+        userDto.setPassWord(encryptPassword(model.getPassWord()));
+        userDto = userStoreGateway.creatUser(userDto);
+        if (Objects.isNull(userDto)) {
+
             return DDDContext.error("创建用户失败");
         }
         // 权限信息后续补充
-        Set<String> roleIds = new HashSet<>();
-        userRoleStoreGateway.maintainUserRole(model.getId(), roleIds);
+        userRoleStoreGateway.maintainUserRole(userDto.getId(), model.getRoleIds());
         return DDDContext.success();
     }
 
@@ -125,5 +141,90 @@ public class UserDomainService {
         return Objects.isNull(permissionCodeByRoleId) ? DDDContext.success(new HashSet<>())
                 : DDDContext.success(permissionCodeByRoleId);
     }
+
+    public DDDContext<Void, Boolean> resetPassword(String userId, String passWord) {
+        UserDto userDto = userStoreGateway.selectUserByUserId(userId);
+        if (Objects.isNull(userDto)) {
+            return DDDContext.error("用户不存在");
+        }
+        userDto.setPassWord(encryptPassword(passWord));
+        Boolean bol = userStoreGateway.updateUser(userDto);
+        return bol ? DDDContext.success(true) : DDDContext.error("更新密码失败");
+    }
+
+
+    public DDDContext<QueryUserModel, PageVO<UserTableModel>> queryUserTableList(QueryUserModel qum) {
+        PageVO<UserDto> a = userStoreGateway.queryUserTableList(qum);
+        if (Objects.isNull(a)) {
+            return DDDContext.error("查询数据异常");
+        }
+        PageVO<UserTableModel> page = translate.toUserTableModelPageByUserDtoPage(a);
+        return DDDContext.success(page);
+    }
+
+    private String encryptPassword(String passWord) {
+        return bCryptPasswordEncoder.encode(passWord);
+    }
+
+    /**
+     * 更新用户状态
+     *
+     * @param userId 用户id
+     * @return
+     */
+    public DDDContext<Void, Boolean> updateUserStatus(String userId) {
+        UserDto userDto = userStoreGateway.selectUserByUserId(userId);
+        if (Objects.isNull(userDto)) {
+            return DDDContext.error("用户不存在");
+        }
+        userDto.setStatus(BoolFlagEnum.YES.getCode().equals(userDto.getStatus()) ? BoolFlagEnum.NOT.getCode() : BoolFlagEnum.YES.getCode());
+        Boolean bol = userStoreGateway.updateUser(userDto);
+        return bol ? DDDContext.success(true) : DDDContext.error("更新用户状态失败");
+
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    public DDDContext<Void, Boolean> deleteUser(String userId) {
+        boolean bol = userStoreGateway.deleteUserByUserId(userId);
+        if (!bol) {
+            return DDDContext.error("删除用户失败");
+        }
+        bol = userRoleStoreGateway.removeUserRoleByUserId(userId);
+        if (!bol) {
+            return DDDContext.error("删除用户失败");
+        }
+        return DDDContext.success(true);
+    }
+
+
+    public DDDContext<Void, Void> updateUser(UserModel model) {
+        UserDto userDto = userStoreGateway.selectUserByUserId(model.getId());
+        if (Objects.isNull(userDto)) {
+            return DDDContext.error("更新用户不存在");
+        }
+        userDto = translate.toUserDtoByUserModel(model);
+        Boolean bol = userStoreGateway.updateUser(userDto);
+        if (Objects.isNull(bol) || !bol) {
+            return DDDContext.error("更新用户失败");
+        }
+        // 权限信息后续补充
+        boolean b = userRoleStoreGateway.maintainUserRole(userDto.getId(), model.getRoleIds());
+        return b ? DDDContext.success() : DDDContext.error("更新用户失败");
+    }
+
+
+    public DDDContext<Void, UserModel> getUserInfo(String userId) {
+        UserDto userDto = userStoreGateway.selectUserByUserId(userId);
+        if (Objects.isNull(userDto)) {
+            return DDDContext.error("用户不存在");
+        }
+        UserModel model = translate.toUserModelByUserDto(userDto);
+
+        Set<String> roleIds = userRoleStoreGateway.getRoleIdsByUserId(userId);
+        model.setRoleIds(roleIds);
+
+        return DDDContext.success(model);
+    }
+
 
 }

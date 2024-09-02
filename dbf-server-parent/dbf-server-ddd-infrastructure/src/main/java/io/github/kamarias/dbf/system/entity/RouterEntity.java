@@ -3,7 +3,7 @@ package io.github.kamarias.dbf.system.entity;
 import com.alibaba.fastjson2.JSON;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
-import io.github.kamarias.dbf.system.entity.base.BaseOperateEntity;
+import io.github.kamarias.dbf.system.entity.base.BaseOperateTimeEntity;
 
 import java.io.Serializable;
 
@@ -14,7 +14,7 @@ import java.io.Serializable;
  * @date 2023/5/29 14:00
  */
 @TableName("t_router")
-public class RouterEntity extends BaseOperateEntity implements Serializable {
+public class RouterEntity extends BaseOperateTimeEntity implements Serializable {
 
 
     /**

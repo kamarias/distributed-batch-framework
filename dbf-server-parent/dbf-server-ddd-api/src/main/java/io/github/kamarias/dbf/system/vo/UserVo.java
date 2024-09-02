@@ -72,22 +72,11 @@ public class UserVo implements Serializable {
     private String remark;
 
 
-    /**
-     * 创建人
-     */
-    private String createBy;
-
 
     /**
      * 创建时间
      */
     private LocalDateTime createTime;
-
-
-    /**
-     * 更新人
-     */
-    private String updateBy;
 
     /**
      * 更新时间

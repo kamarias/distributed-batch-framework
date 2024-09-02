@@ -1,17 +1,14 @@
-package io.github.kamarias.dbf.system.context;
-
+package io.github.kamarias.dbf.system.model;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Set;
+
+public class UserTableModel {
 
 
-public class UserContext {
 
-    /**
-     * 用户Id
-     */
     private String id;
+
 
     /**
      * 用户昵称
@@ -35,10 +32,6 @@ public class UserContext {
      */
     private String phone;
 
-    /**
-     * 密码
-     */
-    private String passWord;
 
     /**
      * 头像
@@ -65,26 +58,17 @@ public class UserContext {
      */
     private String remark;
 
-
     /**
      * 创建时间
      */
     private LocalDateTime createTime;
 
-
-    /**
-     * 更新时间
-     */
-    private LocalDateTime updateTime;
-
-    private Set<String> roleIds;
-
-    public Set<String> getRoleIds() {
-        return roleIds;
+    public LocalDateTime getCreateTime() {
+        return createTime;
     }
 
-    public void setRoleIds(Set<String> roleIds) {
-        this.roleIds = roleIds;
+    public void setCreateTime(LocalDateTime createTime) {
+        this.createTime = createTime;
     }
 
     public String getId() {
@@ -127,14 +111,6 @@ public class UserContext {
         this.phone = phone;
     }
 
-    public String getPassWord() {
-        return passWord;
-    }
-
-    public void setPassWord(String passWord) {
-        this.passWord = passWord;
-    }
-
     public String getAvatar() {
         return avatar;
     }
@@ -175,20 +151,4 @@ public class UserContext {
         this.remark = remark;
     }
 
-
-    public LocalDateTime getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(LocalDateTime createTime) {
-        this.createTime = createTime;
-    }
-
-    public LocalDateTime getUpdateTime() {
-        return updateTime;
-    }
-
-    public void setUpdateTime(LocalDateTime updateTime) {
-        this.updateTime = updateTime;
-    }
 }

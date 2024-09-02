@@ -2,7 +2,7 @@ package io.github.kamarias.dbf.system.entity;
 
 import com.alibaba.fastjson2.JSON;
 import com.baomidou.mybatisplus.annotation.TableName;
-import io.github.kamarias.dbf.system.entity.base.BaseOperateEntity;
+import io.github.kamarias.dbf.system.entity.base.BaseOperateTimeEntity;
 
 import java.io.Serializable;
 
@@ -12,7 +12,7 @@ import java.io.Serializable;
  * @date 2023/5/29 11:26
  */
 @TableName("t_role")
-public class RoleEntity extends BaseOperateEntity implements Serializable {
+public class RoleEntity extends BaseOperateTimeEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
