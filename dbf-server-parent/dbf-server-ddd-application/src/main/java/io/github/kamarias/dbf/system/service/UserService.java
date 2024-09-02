@@ -44,7 +44,7 @@ public class UserService {
         // 检验添加用户
         UserContext data = request.getRequest().getData();
         UserModel model = translate.toUserModelByUserContext(data);
-        DDDContext<Void, Void> accountExists = userDomain.insertUserVerify(model);
+        DDDContext<Void, Void> accountExists = userDomain.updateUserVerify(model);
         if (accountExists.isError()) {
             return accountExists;
         }

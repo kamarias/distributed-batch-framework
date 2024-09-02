@@ -80,6 +80,20 @@ public class UserDomainService {
         return matches ? DDDContext.success() : DDDContext.error("密码匹配失败");
     }
 
+    public DDDContext<Void, Void> updateUserVerify(UserModel model) {
+        UserDto userDto = userStoreGateway.selectUserByUserId(model.getId());
+        if (!model.getPhone().equals(userDto.getPhone()) && userStoreGateway.phoneExists(model.getPhone())) {
+            return DDDContext.error("电话号码已存在");
+        }
+        if (!model.getAccount().equals(userDto.getAccount()) && userStoreGateway.accountExists(model.getAccount())) {
+            return DDDContext.error("账号已存在");
+        }
+        if (!model.getEmail().equals(userDto.getEmail()) && userStoreGateway.emailExists(model.getEmail())) {
+            return DDDContext.error("邮箱已存在");
+        }
+        return DDDContext.success();
+    }
+
     public DDDContext<Void, Void> insertUserVerify(UserModel model) {
         if (userStoreGateway.phoneExists(model.getPhone())) {
             return DDDContext.error("电话号码已存在");
