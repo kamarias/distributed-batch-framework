@@ -63,8 +63,6 @@ public class LoginController {
         }
         // 需要登录的角色
         LoginUser roleLoginUser = translate.toLoginUserByLoginModel(context.getResponse().getData());
-        System.out.println("++++++++++++++++++");
-        System.out.println(roleLoginUser);
         // 清理之前登录的token
         tokenService.deleteToken();
         String token = tokenService.createToken(roleLoginUser);

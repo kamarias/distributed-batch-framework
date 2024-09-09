@@ -1,10 +1,18 @@
 package io.github.kamarias.dbf.system.controller;
 
 
+import io.github.kamarias.annotation.RequiresPermissions;
+import io.github.kamarias.dbf.system.context.QueryRoleContext;
+import io.github.kamarias.dbf.system.context.QueryUserContext;
+import io.github.kamarias.dbf.system.context.RoleTableContext;
+import io.github.kamarias.dbf.system.context.UserTableContext;
 import io.github.kamarias.dbf.system.model.RoleOptionsModel;
 import io.github.kamarias.dbf.system.service.RoleService;
+import io.github.kamarias.dbf.system.translate.RoleControllerTranslate;
+import io.github.kamarias.dbf.system.vo.QueryRoleVo;
 import io.github.kamarias.dto.AjaxResult;
 import io.github.kamarias.dto.DDDContext;
+import io.github.kamarias.vo.PageVO;
 import io.github.kamarias.web.annotation.WebLog;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,20 +28,28 @@ public class RoleController {
 
     private final RoleService roleService;
 
-    public RoleController(RoleService roleService) {
+    private final RoleControllerTranslate translate;
+
+    public RoleController(RoleService roleService, RoleControllerTranslate translate) {
         this.roleService = roleService;
+        this.translate = translate;
     }
 
-//    /**
-//     * 查询角色列表
-//     */
-//    @WebLog("查询角色列表")
-//    @PostMapping("/list")
-//    @RequiresPermissions("system:role:query")
-//    public AjaxResult getList(@RequestBody QueryRoleForm form) {
-//        return AjaxResult.success(roleService.getList(form));
-//    }
-//
+    /**
+     * 查询角色列表
+     */
+    @WebLog("查询角色列表")
+    @PostMapping("/list")
+    @RequiresPermissions("system:role:query")
+    public AjaxResult getList(@RequestBody QueryRoleVo form) {
+        QueryRoleContext context = translate.toQueryRoleContextByQueryRoleVo(form);
+        DDDContext<QueryUserContext, PageVO<RoleTableContext>> roleList = roleService.queryRoleManageList(DDDContext.request(context));
+        if (roleList.isError()) {
+            return AjaxResult.error(roleList.getMsg());
+        }
+        return AjaxResult.success(roleList.getResponse().getData());
+    }
+
 //    /**
 //     * 更新角色状态
 //     */
@@ -94,7 +110,7 @@ public class RoleController {
     @GetMapping("/options")
     public AjaxResult<Object> options() {
         DDDContext<Void, List<RoleOptionsModel>> context = roleService.getRoleOptions();
-        if (context.isError()){
+        if (context.isError()) {
             return AjaxResult.error(context.getMsg());
         }
         return AjaxResult.success(context.getResponse().getData());

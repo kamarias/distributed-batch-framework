@@ -203,10 +203,7 @@ public class UserDomainService {
         if (!bol) {
             return DDDContext.error("删除用户失败");
         }
-        bol = userRoleStoreGateway.removeUserRoleByUserId(userId);
-        if (!bol) {
-            return DDDContext.error("删除用户失败");
-        }
+        userRoleStoreGateway.removeUserRoleByUserId(userId);
         return DDDContext.success(true);
     }
 

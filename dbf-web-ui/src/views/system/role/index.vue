@@ -1,43 +1,3 @@
-<script setup lang="ts">
-import {ref} from "vue";
-import {useRole} from "@/views/system/role/hook";
-import {useRenderIcon} from "@/components/ReIcon/src/hooks";
-import Search from "@iconify-icons/ep/search";
-import Refresh from "@iconify-icons/ep/refresh";
-import Pagination from "@/layout/components/pagination/index.vue";
-import {roleFormRules} from "@/views/system/role/rule";
-import {hasAuth} from "@/router/utils";
-
-defineOptions({
-  name: "Role"
-});
-const {
-  form,
-  loading,
-  dataList,
-  onSearch,
-  resetForm,
-  total,
-  openDialog,
-  title,
-  changePagination,
-  updateStatus,
-  roleForm,
-  permissionData,
-  permissionTreeProp,
-  handleAddRole,
-  handleEditRole,
-  handleDeleteRole,
-  roleFormRef,
-  permissionTreeRef,
-  handleSubmit,
-  handleCancel,
-  resetRoleForm
-} = useRole()
-
-const formRef = ref();
-
-</script>
 
 <template>
   <div class="main">
@@ -121,7 +81,6 @@ const formRef = ref();
       <el-table-column prop="name" label="角色名称" align="center"/>
       <el-table-column prop="code" label="角色编码" align="center"/>
       <el-table-column prop="description" label="角色描述" align="center"/>
-      <el-table-column prop="createTime" label="创建时间" align="center"/>
       <el-table-column prop="createBy" label="创建人" align="center"/>
       <Auth :value="['system:role:status']">
         <el-table-column prop="status" label="状态" align="center">
@@ -263,6 +222,48 @@ const formRef = ref();
 
   </div>
 </template>
+
+
+<script setup lang="ts">
+import {ref} from "vue";
+import {useRole} from "@/views/system/role/hook";
+import {useRenderIcon} from "@/components/ReIcon/src/hooks";
+import Search from "@iconify-icons/ep/search";
+import Refresh from "@iconify-icons/ep/refresh";
+import Pagination from "@/layout/components/pagination/index.vue";
+import {roleFormRules} from "@/views/system/role/rule";
+import {hasAuth} from "@/router/utils";
+
+defineOptions({
+  name: "Role"
+});
+const {
+  form,
+  loading,
+  dataList,
+  onSearch,
+  resetForm,
+  total,
+  openDialog,
+  title,
+  changePagination,
+  updateStatus,
+  roleForm,
+  permissionData,
+  permissionTreeProp,
+  handleAddRole,
+  handleEditRole,
+  handleDeleteRole,
+  roleFormRef,
+  permissionTreeRef,
+  handleSubmit,
+  handleCancel,
+  resetRoleForm
+} = useRole()
+
+const formRef = ref();
+
+</script>
 
 <style scoped lang="scss">
 .tree-node-content-box {
